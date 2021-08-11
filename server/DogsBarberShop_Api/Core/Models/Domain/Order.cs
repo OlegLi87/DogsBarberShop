@@ -16,5 +16,9 @@ namespace DogsBarberShop_Api.Core.Models.Domain
         [DataType(DataType.DateTime)]
         public DateTime ArrivalTime { get; set; }
         public virtual AppUser AppUser { get; set; }
+
+        [Required]
+        [ForeignKey("AppUser")]
+        public string AppUserId { get; set; }
     }
 }

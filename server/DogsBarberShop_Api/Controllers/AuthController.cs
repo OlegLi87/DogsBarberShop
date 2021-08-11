@@ -15,16 +15,16 @@ namespace DogsBarberShop_Api.Controllers
 
         [HttpPost]
         [Route("signup")]
-        public Task<AppHttpResponse> SignUp([FromBody] SignUpCredentialsDto credentials)
+        public async Task<AppHttpResponse> SignUp([FromBody] SignUpCredentialsDto credentials)
         {
-            return null;
+            return await _authService.SignUp(credentials);
         }
 
         [HttpPost]
         [Route("signin")]
-        public Task<AppHttpResponse> SignIn([FromBody] SignInCredentialsDto credentials)
+        public async Task<AppHttpResponse> SignIn([FromBody] SignInCredentialsDto credentials)
         {
-            return null;
+            return await _authService.SignIn(credentials);
         }
     }
 }
