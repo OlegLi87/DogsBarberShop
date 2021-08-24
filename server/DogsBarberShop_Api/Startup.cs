@@ -1,3 +1,4 @@
+using System;
 using DogsBarberShop_Api.Core.Services.AuthService;
 using DogsBarberShop_Api.Infastructure;
 using DogsBarberShop_Api.Infastructure.ExtensionMethods;

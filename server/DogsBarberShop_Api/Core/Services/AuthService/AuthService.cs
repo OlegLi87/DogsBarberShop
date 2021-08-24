@@ -64,8 +64,8 @@ namespace DogsBarberShop_Api.Core.Services.AuthService
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("UserName",user.UserName,ClaimValueTypes.String),
-                    new Claim("FirstName",claims.First(c => c.Type == ClaimTypes.Name).Value,ClaimValueTypes.String)
+                    new Claim("userName",user.UserName,ClaimValueTypes.String),
+                    new Claim("firstName",claims.First(c => c.Type == ClaimTypes.Name).Value,ClaimValueTypes.String)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretBytes), SecurityAlgorithms.HmacSha512),
                 Expires = DateTime.Now.AddDays(15)
@@ -79,7 +79,7 @@ namespace DogsBarberShop_Api.Core.Services.AuthService
         {
             return new AppHttpResponse
             {
-                StatusCode = 200,
+                StatusCode = statusCode,
                 Payload = new AppHttpResponse.ResponsePayload
                 {
                     ResponseObject = jwt
