@@ -68,7 +68,7 @@ namespace DogsBarberShop_Api.Core.Services.AuthService
                     new Claim("firstName",claims.First(c => c.Type == ClaimTypes.Name).Value,ClaimValueTypes.String)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretBytes), SecurityAlgorithms.HmacSha512),
-                Expires = DateTime.Now.AddDays(15)
+                Expires = DateTime.Now.AddSeconds(10)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
