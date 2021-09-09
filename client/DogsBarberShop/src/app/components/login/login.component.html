@@ -1,1 +1,84 @@
-<p>login works!</p>
+<mat-card>
+  <mat-card-title align="center"
+    >{{ loginMode.toString() | i18nSelect: titleTexts }} Form</mat-card-title
+  >
+
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>User Name</mat-label>
+      <input
+        matInput
+        type="text"
+        #userName="ngModel"
+        name="userName"
+        [(ngModel)]="userCredentials.userName"
+        required
+        minlength="3"
+      />
+      <mat-error *ngIf="userName.errors?.required"
+        >User name is missing.</mat-error
+      >
+      <mat-error *ngIf="userName.errors?.minlength"
+        >User name must has at least 3 characters.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!loginMode">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        type="text"
+        #firstName="ngModel"
+        name="firstName"
+        [(ngModel)]="userCredentials.firstName"
+        required
+        minlength="2"
+        pattern="^[a-zA-Z]+$"
+      />
+      <mat-error *ngIf="firstName.errors?.required"
+        >First name is missing.</mat-error
+      >
+      <mat-error *ngIf="firstName.errors?.minlength"
+        >First name must has at least 2 characters.</mat-error
+      >
+      <mat-error *ngIf="firstName.errors?.pattern"
+        >First name must contain only letters without spaces.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        name="password"
+        #password="ngModel"
+        [(ngModel)]="userCredentials.password"
+        required
+        minlength="5"
+      />
+      <mat-error *ngIf="password.errors?.required"
+        >Password is missing.</mat-error
+      >
+      <mat-error *ngIf="password.errors?.minlength"
+        >Password must has at least 5 characters.</mat-error
+      >
+    </mat-form-field>
+
+    <div class="btn-container">
+      <button mat-raised-button color="primary">
+        {{ loginMode.toString() | i18nSelect: titleTexts }}
+      </button>
+      <button type="reset" mat-raised-button color="warn" (click)="onReset()">
+        Reset
+      </button>
+    </div>
+
+    <div class="switch-mode-container">
+      <small (click)="toggleMode()">{{
+        loginMode.toString() | i18nSelect: toggleModeTexts
+      }}</small>
+    </div>
+  </form>
+  <loading-spinner *ngIf="isLoading"></loading-spinner>
+</mat-card>

@@ -1,4 +1,4 @@
-import { AuthService } from './../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { APP_INITIALIZER, FactoryProvider } from '@angular/core';
 
 function getInitFunc(authService: AuthService): () => void {

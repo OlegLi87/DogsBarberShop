@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { UserCredentials } from './../../models/UserCredentials';
+import { AuthService } from './../../services/auth.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { LoginMode } from 'src/app/models/LoginMode';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'login',
@@ -6,7 +10,49 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.sass'],
 })
 export class LoginComponent implements OnInit {
-  constructor() {}
+  userCredentials: UserCredentials = new UserCredentials();
+  loginMode: LoginMode = LoginMode.SignUp;
+  isLoading = false;
+
+  titleTexts = {
+    [LoginMode.SignUp]: 'Sign Up',
+    [LoginMode.SignIn]: 'Sign In',
+  };
+
+  toggleModeTexts = {
+    [LoginMode.SignUp]: 'Allready have an account?',
+    [LoginMode.SignIn]: 'New user?',
+  };
+
+  @ViewChild('form') form!: NgForm;
+
+  constructor(private _authService: AuthService) {}
 
   ngOnInit(): void {}
+
+  toggleMode(): void {
+    if (this.loginMode === LoginMode.SignUp) this.loginMode = LoginMode.SignIn;
+    else this.loginMode = LoginMode.SignUp;
+
+    this.form.resetForm();
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) return;
+    this.isLoading = true;
+    this._authService.login(this.userCredentials, this.loginMode).subscribe(
+      (res) => {
+        this.isLoading = false;
+      },
+      (err) => {
+        this.isLoading = false;
+        throw err;
+      }
+    );
+  }
+
+  onReset(): void {
+    this.userCredentials = new UserCredentials();
+    this.form.resetForm();
+  }
 }

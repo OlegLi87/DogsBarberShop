@@ -37,7 +37,9 @@ namespace DogsBarberShop_Api.Core.Services.AuthService
             if (!addClaimResult.Succeeded)
                 return createResponseWithErrors(addClaimResult.Errors.Select(e => e.Description));
 
-            var jwt = await createJwt(newUser);
+            var userInDb = await _userManager.FindByNameAsync(credentials.UserName);
+
+            var jwt = await createJwt(userInDb);
             return createResponseWithJwt(jwt, 201);
         }
 
@@ -64,11 +66,12 @@ namespace DogsBarberShop_Api.Core.Services.AuthService
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim("id",user.Id,ClaimValueTypes.String),
                     new Claim("userName",user.UserName,ClaimValueTypes.String),
                     new Claim("firstName",claims.First(c => c.Type == ClaimTypes.Name).Value,ClaimValueTypes.String)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretBytes), SecurityAlgorithms.HmacSha512),
-                Expires = DateTime.Now.AddSeconds(10)
+                Expires = DateTime.Now.AddDays(10)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

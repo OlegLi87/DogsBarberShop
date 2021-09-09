@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiAdress: 'https://localhost:5001',
+  apiAdress: 'https://localhost:5001/api',
   localStorageKeys: {
     jwt: 'JWT_KEY',
   },
