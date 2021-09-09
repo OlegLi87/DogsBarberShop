@@ -1,0 +1,39 @@
+:host
+    display: block
+    
+h1
+    text-align: center
+    margin: 0
+    font-size: clamp(15px,8vw,50px)
+    font-family: inherit
+    line-height: normal    
+    padding: 0.5em 0
+    background-image: linear-gradient(to left,#F54D40,#495AB9)
+    color: white
+    position: relative
+    overflow: hidden
+
+    &::after
+        content: ''
+        display: block
+        position: absolute
+        bottom: -1.5em
+        right: 0.5em
+        width: 0.5em
+        height: 5em
+        transform: rotateZ(45deg)
+        background-color: white
+
+    &::before
+        content: ''
+        display: block
+        position: absolute
+        bottom: -1.5em
+        left: 0.2em
+        width: 0.5em
+        height: 5em
+        transform: rotateZ(45deg)
+        background-color: white
+
+.orders-container 
+   

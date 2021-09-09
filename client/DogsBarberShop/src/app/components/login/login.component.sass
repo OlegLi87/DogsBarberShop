@@ -1,7 +1,5 @@
 @import '../../../my-theme'
 
-$primary-color: map-get($my-primary, text )
-
 :host
     position: relative
     min-height: 100vh
@@ -38,11 +36,11 @@ mat-form-field
     margin-top: 1.2em
 
     small
-        color: lighten($primary-color,20% )
+        color: lighten($primaryColor,20% )
         text-decoration: underline
 
         &:hover
-           color: $primary-color 
+           color: $primaryColor
 
     &:hover
         cursor: pointer

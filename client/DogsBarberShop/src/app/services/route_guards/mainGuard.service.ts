@@ -24,7 +24,7 @@ export class MainGuard implements CanActivate {
 
     const index = urlSegments.findIndex((url) => url.path === 'login');
     if (index !== -1 && user) return false;
-    if (state.url == '' && !user) return false;
+    if (state.url == 'orders' && !user) return false;
 
     return true;
   }

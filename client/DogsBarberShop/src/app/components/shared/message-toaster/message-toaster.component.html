@@ -1,5 +1,5 @@
 <mat-card [style.background]="backGround" *ngIf="message">
-  <h3 *ngIf="message.messages.length === 1">{{ message.messages[0] }}</h3>
+  <h2 *ngIf="message.messages.length === 1">{{ message.messages[0] }}</h2>
   <ul *ngIf="message.messages.length > 1">
     <li *ngFor="let message of message.messages">
       {{ message }}

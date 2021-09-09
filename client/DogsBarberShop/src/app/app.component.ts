@@ -6,9 +6,6 @@ import { NavigationService } from './services/navigation.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass'],
   providers: [NavigationService],
-  host: {
-    class: 'app-main',
-  },
 })
 export class AppComponent {
   title = 'DogsBarberShop';

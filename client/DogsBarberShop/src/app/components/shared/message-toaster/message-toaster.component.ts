@@ -1,10 +1,12 @@
 import {
   MessagesStream,
   MESSAGES_STREAM,
-} from './../../infastructure/di_providers/messagesStream.provider';
+} from '../../../infastructure/di_providers/messagesStream.provider';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Message, MessageStatus } from 'src/app/models/Message';
 import { AppConfig } from 'src/app/infastructure/di_providers/appConfig.provider';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'message-toaster',
@@ -16,12 +18,16 @@ export class MessageToasterComponent implements OnInit {
   private readonly _displayTime = 5000;
 
   constructor(
+    private router: Router,
     @Inject(MESSAGES_STREAM) private _messagesStream$: MessagesStream,
     @Inject('appConfig') private _appConfig: AppConfig
   ) {}
 
   ngOnInit(): void {
     this._messagesStream$.subscribe(this.saveMessage.bind(this));
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => (this.message = null));
   }
 
   saveMessage(message: Message): void {
