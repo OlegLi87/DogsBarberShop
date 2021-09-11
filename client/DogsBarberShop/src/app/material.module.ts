@@ -4,12 +4,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 const modules = [
   MatButtonModule,
   MatCardModule,
   MatFormFieldModule,
   MatInputModule,
+  MatIconModule,
+  NgxMaterialTimepickerModule,
 ];
 
 @NgModule({

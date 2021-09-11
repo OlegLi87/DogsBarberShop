@@ -1,3 +1,6 @@
+import { DateTimePickerDirective } from './directives/date-time-picker.directive';
+import { OrderListItemComponent } from './components/main/order-list/order-list-item/order-list-item.component';
+import { ordersRepositoryProvider } from './infastructure/di_providers/ordersRepository.provider';
 import { confirmMessageStreamProvide } from './infastructure/di_providers/confirmMessageStream.provider';
 import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
 import { MainComponent } from './components/main/main.component';
@@ -18,7 +21,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProvider } from './infastructure/di_providers/httpInterceptor.provider';
 import { messagesStreamProvider } from './infastructure/di_providers/messagesStream.provider';
-import { OrderComponent } from './components/main/order-list/order/order.component';
+import { OrderDetailsComponent } from './components/main/order-details/order-details.component';
 
 const modules = [
   CommonModule,
@@ -29,15 +32,15 @@ const modules = [
 ];
 const components = [
   LoginComponent,
-  OrderListComponent,
-  OrderComponent,
   NotFoundComponent,
   LoadingSpinnerComponent,
   MessageToasterComponent,
   MainComponent,
   OrderListComponent,
-  OrderComponent,
+  OrderListItemComponent,
+  OrderDetailsComponent,
   ConfirmModalComponent,
+  DateTimePickerDirective,
 ];
 const diProviders = [
   userStreamProvider,
@@ -47,6 +50,7 @@ const diProviders = [
   appConfigProvider,
   errorHandlerProvider,
   confirmMessageStreamProvide,
+  ordersRepositoryProvider,
 ];
 
 @NgModule({

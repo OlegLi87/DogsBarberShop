@@ -8,7 +8,5 @@ import { NavigationService } from './services/navigation.service';
   providers: [NavigationService],
 })
 export class AppComponent {
-  title = 'DogsBarberShop';
-
   constructor(private navigationService: NavigationService) {}
 }

@@ -1,3 +1,4 @@
+@import './my-theme'
 @import url('https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap')
 
 * 
@@ -7,4 +8,29 @@
 html,body
     min-height: 100vh
     margin: 0
+
+.timepicker 
+  
+  .timepicker__header 
+    background-image: linear-gradient(to left,$warnColor,$primaryColor) !important
+  
+  .clock-face__clock-hand 
+    background-color: $primaryColor !important
+
+    &::after 
+      background-color: $primaryColor !important
+    
+
+    &::before 
+      border-color: $primaryColor !important
+   
+
+  .clock-face__number 
+    > span.active 
+      background-color: $primaryColor !important
+   
+
+  button:not(.timepicker-dial__item) 
+    color: $primaryColor !important
+ 
       

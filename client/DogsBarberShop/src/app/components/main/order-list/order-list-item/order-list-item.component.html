@@ -1,0 +1,20 @@
+<div class="details" (click)="showDetails = true">
+  <span>Details</span>
+</div>
+
+<mat-card [@cardSlide]="animationState">
+  <mat-card-title>
+    {{ order.userFirstName }}
+  </mat-card-title>
+  <mat-card-subtitle>
+    Arrival Date: {{ order.arrivalTime | date: "dd/MM/YY" }}
+    <br />
+    Arrival Time: {{ order.arrivalTime | date: "HH:MM" }}
+  </mat-card-subtitle>
+</mat-card>
+
+<order-details
+  [order]="order"
+  *ngIf="showDetails"
+  (closed)="closeOrderDetailsModal()"
+></order-details>

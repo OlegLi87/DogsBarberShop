@@ -1,0 +1,26 @@
+@import '../../../../../my-theme'
+
+:host
+    position: relative
+
+    &:hover
+        cursor: pointer
+
+.details
+    position: absolute
+    background-color: green
+    height: 100%
+    width: clamp(40px,7vw,60px)
+    border-radius: 5px
+    background-color: $primaryColor
+        
+mat-card
+    background-image: linear-gradient(to left bottom,$primaryColor,$warnColor) !important
+    color: white !important
+    font-family: inherit
+
+    mat-card-subtitle
+        color: inherit
+
+
+

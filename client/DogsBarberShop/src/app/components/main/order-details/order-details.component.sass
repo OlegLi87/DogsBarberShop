@@ -1,0 +1,32 @@
+@import '../../../../my-theme'
+
+:host 
+    position: fixed
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    background-color: darken($modalBackgroundColor, 100%)
+    z-index: 2
+    display: flex
+    justify-content: center
+    align-items: center
+
+.close-btn
+    position: inherit
+    top: 3rem
+    left: 3rem
+
+mat-card
+    display: grid
+    grid-gap: 1em
+
+    .buttons-container
+        display: flex
+        justify-content: space-around
+        width: 50%
+        margin: 0 auto
+
+ngx-material-timepicker-container
+       font-family: inherit !important
+       color: red !important
