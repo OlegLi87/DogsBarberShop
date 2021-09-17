@@ -1,3 +1,4 @@
+import { OrderDetailsEditComponent } from './components/main/order-details/order-details-edit/order-details-edit.component';
 import { DateTimePickerDirective } from './directives/date-time-picker.directive';
 import { OrderListItemComponent } from './components/main/order-list/order-list-item/order-list-item.component';
 import { ordersRepositoryProvider } from './infastructure/di_providers/ordersRepository.provider';
@@ -39,6 +40,7 @@ const components = [
   OrderListComponent,
   OrderListItemComponent,
   OrderDetailsComponent,
+  OrderDetailsEditComponent,
   ConfirmModalComponent,
   DateTimePickerDirective,
 ];

@@ -1,0 +1,48 @@
+<div class="edit-titles-container">
+  <mat-card-title
+    ><span>Arrival date : {{ date }}</span>
+  </mat-card-title>
+  <button
+    class="edit-date-toggler"
+    mat-mini-fab
+    color="primary"
+    (click)="picker.open()"
+  >
+    <mat-icon>event</mat-icon>
+    <input
+      matInput
+      [min]="minDate"
+      [matDatepicker]="picker"
+      (dateChange)="onDateChanged($event)"
+    />
+    <mat-datepicker #picker [touchUi]="false"></mat-datepicker>
+  </button>
+
+  <mat-card-title
+    ><span> Arrival time: {{ time }}</span>
+  </mat-card-title>
+  <button mat-mini-fab color="primary" (click)="timePickerToggler.click()">
+    <mat-icon>schedule</mat-icon>
+
+    <input
+      [ngxTimepicker]="min"
+      [min]="'9:00'"
+      [max]="'18:00'"
+      [format]="24"
+      hidden
+      #timePickerToggler
+      [(ngModel)]="time"
+    />
+    <ngx-material-timepicker #min [minutesGap]="5"></ngx-material-timepicker>
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    class="btn-save"
+    (click)="onSaveClicked()"
+    *ngIf="isChangesMade"
+  >
+    Save
+  </button>
+</div>

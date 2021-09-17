@@ -1,36 +1,12 @@
 import { Order } from './../../../../models/Order';
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnInit,
-} from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { listItemMatCardSlide } from 'src/app/infastructure/animations/listItemMatCardSlide.animation';
 
 @Component({
   selector: 'order-list-item',
   templateUrl: './order-list-item.component.html',
   styleUrls: ['./order-list-item.component.sass'],
-  animations: [
-    trigger('cardSlide', [
-      state('normal', style({})),
-      state(
-        'slide',
-        style({
-          transform: 'translate(clamp(40px,7vw,60px))',
-        })
-      ),
-      transition('normal => slide', animate(150)),
-      transition('slide => normal', animate(150)),
-    ]),
-  ],
+  animations: [listItemMatCardSlide],
 })
 export class OrderListItemComponent implements OnInit {
   @Input() order!: Order;

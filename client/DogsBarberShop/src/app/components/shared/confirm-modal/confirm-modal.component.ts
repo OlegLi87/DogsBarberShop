@@ -11,7 +11,7 @@ import { CONFIRM_MESSAGE_STREAM } from 'src/app/infastructure/di_providers/confi
 export class ConfirmModalComponent implements OnInit {
   confirmMessage!: ConfirmMessage;
 
-  @HostBinding('style.visibility') display = 'hidden';
+  @HostBinding('class.visible') isVisbile = false;
 
   constructor(
     @Inject(CONFIRM_MESSAGE_STREAM)
@@ -20,13 +20,13 @@ export class ConfirmModalComponent implements OnInit {
 
   ngOnInit(): void {
     this._confirmMessageStream$.subscribe((cm) => {
-      this.display = 'visible';
+      this.isVisbile = true;
       this.confirmMessage = cm;
     });
   }
 
   onAnswerClicked(response: boolean): void {
-    this.display = 'hidden';
+    this.isVisbile = false;
     if (response) this.confirmMessage.confirmAction();
     else this.confirmMessage.rejectAction();
   }

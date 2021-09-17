@@ -7,11 +7,16 @@
     height: 100vh
     width: 100vw
     background-color: $modalBackgroundColor 
-    position: absolute
-    z-index: 3
+    position: fixed
     top: 0
-    left: 0
+    left: -100%
+    z-index: 3
     padding:0 2em
+    transition: transform 0.3s ease-in
+
+    &.visible
+       transform: translateX(100%)
+       transition: transform 0.3s ease-out
 
 .btn-group
     display: flex

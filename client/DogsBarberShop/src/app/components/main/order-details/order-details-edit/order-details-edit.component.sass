@@ -1,0 +1,22 @@
+.edit-titles-container
+       height: 100%
+       display: grid
+       grid-template-columns: repeat(2, 1fr)
+       grid-template-rows: repeat(2, 1fr) auto
+       place-items: center  
+
+       & > * 
+           backface-visibility: hidden 
+
+.edit-date-toggler
+    position: relative
+
+    *:not(:first-child)
+        position: absolute
+        top: -0
+        left: 0
+        transform: translateX(-100%)
+        visibility: hidden
+
+.btn-save
+    grid-column: span 2

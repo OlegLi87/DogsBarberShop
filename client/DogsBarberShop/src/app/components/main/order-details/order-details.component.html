@@ -1,39 +1,41 @@
-<button mat-mini-fab color="warn" class="close-btn" (click)="closed.emit()">
+<button mat-mini-fab color="warn" class="close-btn" (click)="onClosedClicked()">
   <mat-icon>close icon</mat-icon>
 </button>
 
-<mat-card>
-  <mat-card-title>Order #ID: {{ order.orderId }}</mat-card-title>
-  <mat-card-title>User #ID: {{ order.userId }}</mat-card-title>
-  <mat-card-title>First Name: {{ order.userFirstName }}</mat-card-title>
-  <mat-card-title
-    >Arrival Date: {{ order.arrivalTime | date: "dd/MM/YY" }} ({{
-      order.arrivalTime | date: "HH:mm"
-    }})</mat-card-title
-  >
-  <mat-card-title
-    >Arrival Date: {{ order.orderTime | date: "dd/MM/YY" }} ({{
-      order.orderTime | date: "HH:mm"
-    }})</mat-card-title
-  >
-  <div class="buttons-container" *ngIf="toShowButtons">
-    <button mat-raised-button color="warn" (click)="removeOrder()">
-      <mat-icon>delete forever icon</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" (click)="onEditClicked()">
-      <mat-icon>create</mat-icon>
-    </button>
-  </div>
+<div class="mat-cards-container">
+  <mat-card class="mat-card info" [@infoRotation]="animationState">
+    <mat-card-title>Order #ID: {{ order.orderId }}</mat-card-title>
+    <mat-card-title>User #ID: {{ order.userId }}</mat-card-title>
+    <mat-card-title>First Name: {{ order.userFirstName }}</mat-card-title>
+    <mat-card-title
+      >Arrival Date: {{ order.arrivalTime | date: "dd/MM/YY" }} ({{
+        order.arrivalTime | date: "HH:mm"
+      }})</mat-card-title
+    >
+    <mat-card-title
+      >Order Date: {{ order.orderTime | date: "dd/MM/YY" }} ({{
+        order.orderTime | date: "HH:mm"
+      }})</mat-card-title
+    >
+    <div class="buttons-container" *ngIf="toShowButtons">
+      <button mat-raised-button color="warn" (click)="removeOrder()">
+        <mat-icon>delete forever icon</mat-icon>
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="animationState = 'rotate'"
+      >
+        <mat-icon>create</mat-icon>
+      </button>
+    </div>
+  </mat-card>
 
-  <input
-    placeholder="Min time 03:15 am"
-    [ngxTimepicker]="min"
-    [min]="'9:00'"
-    [max]="'18:00'"
-    [format]="24"
-    readonly
-    style="visibility: hidden"
-    #timePickerToggler
-  />
-  <ngx-material-timepicker #min></ngx-material-timepicker>
-</mat-card>
+  <order-details-edit
+    class="mat-card"
+    [arrivalDate]="order.arrivalTime"
+    [orderId]="order.orderId"
+    [@editRotation]="animationState"
+    (saved)="onClosedClicked()"
+  ></order-details-edit>
+</div>
