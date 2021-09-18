@@ -63,9 +63,10 @@ export class OrderDetailsComponent implements OnInit {
 
   onClosedClicked(): void {
     if (
+      this.isEditEnabled &&
       this.editComponent.clonedDate.getTime() !==
-      this.order.arrivalTime.getTime()
-    )
+        this.order.arrivalTime.getTime()
+    ) {
       this._confirmMessageStream.next(
         new ConfirmMessage(
           'All changes will be lost.Are you sure to exit?',
@@ -75,10 +76,10 @@ export class OrderDetailsComponent implements OnInit {
           () => {}
         )
       );
-    else this.closed.emit();
+    } else this.closed.emit();
   }
 
-  get toShowButtons(): boolean {
+  get isEditEnabled(): boolean {
     return this.order.userId === this._userStream$.value?.id;
   }
 }

@@ -1,7 +1,6 @@
 import { OrderDetailsEditComponent } from './components/main/order-details/order-details-edit/order-details-edit.component';
 import { DateTimePickerDirective } from './directives/date-time-picker.directive';
 import { OrderListItemComponent } from './components/main/order-list/order-list-item/order-list-item.component';
-import { ordersRepositoryProvider } from './infastructure/di_providers/ordersRepository.provider';
 import { confirmMessageStreamProvide } from './infastructure/di_providers/confirmMessageStream.provider';
 import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
 import { MainComponent } from './components/main/main.component';
@@ -52,7 +51,6 @@ const diProviders = [
   appConfigProvider,
   errorHandlerProvider,
   confirmMessageStreamProvide,
-  ordersRepositoryProvider,
 ];
 
 @NgModule({

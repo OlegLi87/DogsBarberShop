@@ -8,12 +8,23 @@
 
 .details
     position: absolute
-    background-color: green
     height: 100%
     width: clamp(40px,7vw,60px)
-    border-radius: 5px
-    background-color: $primaryColor
+    padding: 0.5em
+
+    .icon-container
+        background-color: $primaryColor
+        border-radius: 5px
+        display: grid
+        place-items: center     
+        height: 100%
+        width: 100%
+        transform: box-shadow 0.5s linear
         
+        &:hover
+            box-shadow: 0 0 5px black
+            
+
 mat-card
     background-image: linear-gradient(to left bottom,$primaryColor,$warnColor) !important
     color: white !important

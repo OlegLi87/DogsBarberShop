@@ -31,7 +31,7 @@ class AppHttpInterceptor implements HttpInterceptor {
       retryWhen((errors) => {
         let retryCount = 0;
         return errors.pipe(
-          delay(1000),
+          delay(500),
           tap((error: HttpErrorResponse) => {
             if (++retryCount > 3 || (error.status < 500 && error.status))
               throw error;

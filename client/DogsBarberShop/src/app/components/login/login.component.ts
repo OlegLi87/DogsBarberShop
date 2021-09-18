@@ -3,6 +3,7 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoginMode } from 'src/app/models/LoginMode';
 import { NgForm } from '@angular/forms';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'login',
@@ -40,15 +41,16 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.form.invalid) return;
     this.isLoading = true;
-    this._authService.login(this.userCredentials, this.loginMode).subscribe(
-      (res) => {
-        this.isLoading = false;
-      },
-      (err) => {
-        this.isLoading = false;
-        throw err;
-      }
-    );
+    this._authService
+      .login(this.userCredentials, this.loginMode)
+      .pipe(
+        tap(() => (this.isLoading = false)),
+        catchError((err) => {
+          this.isLoading = false;
+          throw err;
+        })
+      )
+      .subscribe();
   }
 
   onReset(): void {

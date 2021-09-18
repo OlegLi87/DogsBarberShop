@@ -17,7 +17,7 @@
         order.orderTime | date: "HH:mm"
       }})</mat-card-title
     >
-    <div class="buttons-container" *ngIf="toShowButtons">
+    <div class="edit-btn-container" *ngIf="isEditEnabled">
       <button mat-raised-button color="warn" (click)="removeOrder()">
         <mat-icon>delete forever icon</mat-icon>
       </button>
@@ -32,6 +32,7 @@
   </mat-card>
 
   <order-details-edit
+    *ngIf="isEditEnabled"
     class="mat-card"
     [arrivalDate]="order.arrivalTime"
     [orderId]="order.orderId"

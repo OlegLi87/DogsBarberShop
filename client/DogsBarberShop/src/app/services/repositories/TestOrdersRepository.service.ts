@@ -8,10 +8,13 @@ import { Order } from 'src/app/models/Order';
 import { OrdersRepository } from './OrdersRepository';
 import { cloneDeep } from 'lodash';
 import { Message } from 'src/app/models/Message';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable()
 export class TestOrdersRepositoryService extends OrdersRepository {
   private _orders!: Order[];
+  private _repositoryStream$ = new Subject<Array<Order> | Order>();
+  private _callingCount = 0;
 
   constructor(
     @Inject(MESSAGES_STREAM) private _messagesStream$: MessagesStream
@@ -32,7 +35,7 @@ export class TestOrdersRepositoryService extends OrdersRepository {
     );
     this._orders.push(
       new Order(
-        '4',
+        '5',
         'ba951056-35b2-4309-ac56-b9d1cfdc2c3f',
         'Oleg',
         new Date(2021, 11, 18),
@@ -41,36 +44,59 @@ export class TestOrdersRepositoryService extends OrdersRepository {
     );
   }
 
-  getOrder(orderId: string): Order | null {
-    let order = this._orders.find((o) => (o.orderId = orderId));
-    if (order) return cloneDeep(order);
-    return null;
+  getRepositoryStream(): Observable<Array<Order> | Order> {
+    return this._repositoryStream$;
   }
 
-  getOrders(): Order[] {
+  streamOrder(orderId: string): void {
+    let order = this._orders.find((o) => (o.orderId = orderId));
+    if (order) this._repositoryStream$.next(cloneDeep(order));
+  }
+
+  // with network latency imitation
+  streamOrders(): void {
     const orders = new Array<Order>();
     this._orders.forEach((o) => orders.push(cloneDeep(o)));
-    return orders;
+    if (!this._callingCount++)
+      setTimeout(() => this._repositoryStream$.next(orders), 3000);
+    else this._repositoryStream$.next(orders);
   }
 
   addOrder(order: Order): void {
     this._orders.push(order);
+    this.streamOrders();
   }
 
   removeOrder(orderId: string): void {
     const index = this._orders.findIndex((o) => o.orderId === orderId);
-    if (index !== -1) this._orders = this._orders.splice(index, 1);
+    if (index > -1) {
+      this._orders.splice(index, 1);
+      this.streamOrders();
+      this._messagesStream$.next(
+        new Message(
+          'Your order successfully removed from the list.',
+          MessageStatus.Success
+        )
+      );
+    }
   }
 
   updateOrder(orderId: string, updatedData: { [key: string]: any }): void {
-    let order = this.getOrder(orderId) as Order;
-    order = { ...order, ...updatedData };
+    let order = this._orders.find((o) => o.orderId === orderId);
+    let updated = false;
 
-    const index = this._orders.findIndex((o) => o.orderId === orderId);
-    if (index > -1) {
-      this._orders.splice(index, 1, order);
+    if (order) {
+      for (var key in updatedData)
+        if ((order as Object).hasOwnProperty(key)) {
+          (order as any)[key] = updatedData[key];
+          updated = true;
+        }
+    }
+
+    if (updated) {
+      this.streamOrders();
       this._messagesStream$.next(
-        new Message(['Order updated successfully.'], MessageStatus.Success)
+        new Message('Your order successfuly updated.', MessageStatus.Success)
       );
     }
   }

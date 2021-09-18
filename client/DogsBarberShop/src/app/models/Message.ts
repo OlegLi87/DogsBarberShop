@@ -5,5 +5,12 @@ export enum MessageStatus {
 }
 
 export class Message {
-  constructor(public messages: string[], public status: MessageStatus) {}
+  constructor(
+    private _message: string | string[],
+    public status: MessageStatus
+  ) {}
+
+  get messages(): string[] {
+    return ([] as string[]).concat(this._message);
+  }
 }

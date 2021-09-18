@@ -1,5 +1,5 @@
 <div class="details" (click)="showDetails = true">
-  <span>Details</span>
+  <div class="icon-container"><mat-icon color="warn">info</mat-icon></div>
 </div>
 
 <mat-card [@cardSlide]="animationState">
@@ -9,7 +9,7 @@
   <mat-card-subtitle>
     Arrival Date: {{ order.arrivalTime | date: "dd/MM/YY" }}
     <br />
-    Arrival Time: {{ order.arrivalTime | date: "HH:MM" }}
+    Arrival Time: {{ order.arrivalTime | date: "HH:mm" }}
   </mat-card-subtitle>
 </mat-card>
 

@@ -20,10 +20,11 @@ class AppErrorHandler implements ErrorHandler {
     if (error instanceof HttpErrorResponse)
       message = this._utils.createMessageFromHttpErrorResponse(error);
     else if (error instanceof Error)
-      message = new Message([error.message], MessageStatus.Error);
+      message = new Message(error.message, MessageStatus.Error);
     else if (typeof error === 'string')
-      message = new Message([error], MessageStatus.Error);
+      message = new Message(error, MessageStatus.Error);
 
+    // in case error occurrs outside ngZone
     this._ngZone.run(() => this._messagesStream$.next(message));
   }
 }
