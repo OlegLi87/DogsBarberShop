@@ -11,9 +11,9 @@ export interface AppConfig {
 
 const appConfig: AppConfig = {
   colors: {
-    success: '#D1F8D1',
-    warning: '#FFD65C',
-    error: '#ff5454',
+    success: 'rgba(121, 224, 121, 0.95)',
+    warning: 'rgba(255, 214, 92, 0.95)',
+    error: 'rgba(255, 84, 84,0.95)',
   },
 };
 

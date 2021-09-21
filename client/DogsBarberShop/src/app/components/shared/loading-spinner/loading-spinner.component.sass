@@ -1,6 +1,4 @@
-@import '../../../../my-theme'
-
-$primary-color: map-get($my-primary, text )
+@import '_shared'
 
 :host
   display: flex
@@ -25,7 +23,7 @@ $primary-color: map-get($my-primary, text )
       width: 6px
       height: 18px
       border-radius: 20%
-      background: $primary-color
+      background: $primaryColor
 
     &:nth-child(1)
       transform: rotate(0deg)

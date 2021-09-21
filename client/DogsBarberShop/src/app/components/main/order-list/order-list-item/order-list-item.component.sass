@@ -1,4 +1,4 @@
-@import '../../../../../my-theme'
+@import '_shared'
 
 :host
     position: relative
@@ -22,11 +22,13 @@
         transform: box-shadow 0.5s linear
         
         &:hover
-            box-shadow: 0 0 5px black
-            
+            @include button-box-shadow(8px)
 
+        &:active
+            @include button-box-shadow(16px)
+            
 mat-card
-    background-image: linear-gradient(to left bottom,$primaryColor,$warnColor) !important
+    @include main-gradient(to left bottom)
     color: white !important
     font-family: inherit
 

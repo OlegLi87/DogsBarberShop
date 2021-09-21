@@ -5,6 +5,19 @@
       *ngFor="let order of orders; trackBy: trackByFunction"
       [order]="order"
     ></order-list-item>
+
+    <div class="add-order-container" *ngIf="!isActiveUserHasOrder">
+      <div class="add-order-btn" (click)="toShowOrderCreate = true">
+        <mat-icon color="warn">add_square</mat-icon>
+        <h2>Add Order</h2>
+        <mat-icon color="primary">add</mat-icon>
+      </div>
+    </div>
   </ng-container>
   <loading-spinner *ngIf="isLoading"></loading-spinner>
 </div>
+
+<order-create
+  *ngIf="toShowOrderCreate"
+  (closed)="toShowOrderCreate = false"
+></order-create>

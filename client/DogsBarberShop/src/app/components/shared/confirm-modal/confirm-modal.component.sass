@@ -1,21 +1,13 @@
-@import '../../../../my-theme'
+@import '_shared'
     
 :host
-    display: flex
-    justify-content: center
-    align-items: center
-    height: 100vh
-    width: 100vw
-    background-color: $modalBackgroundColor 
-    position: fixed
-    top: 0
-    left: -100%
-    z-index: 3
-    padding:0 2em
+    @include modal
+    transform: translateX(-100%)
     transition: transform 0.3s ease-in
+    z-index: 3
 
     &.visible
-       transform: translateX(100%)
+       transform: translateX(0)
        transition: transform 0.3s ease-out
 
 .btn-group

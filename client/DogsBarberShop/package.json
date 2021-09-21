@@ -23,6 +23,7 @@
     "color": "^4.0.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
+    "nanoid": "^3.1.25",
     "ngx-material-timepicker": "^5.5.3",
     "rxjs": "~6.6.0",
     "string-to-color": "^2.2.2",

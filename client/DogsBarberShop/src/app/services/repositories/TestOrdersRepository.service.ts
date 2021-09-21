@@ -1,3 +1,7 @@
+import {
+  USER_STREAM,
+  UserStream,
+} from './../../infastructure/di_providers/userStream.provider';
 import { MessageStatus } from './../../models/Message';
 import {
   MESSAGES_STREAM,
@@ -10,32 +14,60 @@ import { cloneDeep } from 'lodash';
 import { Message } from 'src/app/models/Message';
 import { Subject, Observable } from 'rxjs';
 
+import { nanoid } from 'nanoid';
+import { User } from 'src/app/models/User';
+
 @Injectable()
 export class TestOrdersRepositoryService extends OrdersRepository {
   private _orders!: Order[];
-  private _repositoryStream$ = new Subject<Array<Order> | Order>();
+  private _repositoryStream$ = new Subject<Array<Order>>();
   private _callingCount = 0;
 
   constructor(
-    @Inject(MESSAGES_STREAM) private _messagesStream$: MessagesStream
+    @Inject(MESSAGES_STREAM) private _messagesStream$: MessagesStream,
+    @Inject(USER_STREAM) private _userStream$: UserStream
   ) {
     super();
     this._orders = new Array<Order>();
     this._orders.push(
-      new Order('1', '1', 'Jack', new Date(2021, 10, 10), new Date(2021, 9, 9))
-    );
-    this._orders.push(
-      new Order('2', '2', 'Sara', new Date(2021, 10, 25), new Date(2021, 9, 10))
-    );
-    this._orders.push(
-      new Order('3', '3', 'Mike', new Date(2021, 9, 28), new Date(2021, 9, 10))
-    );
-    this._orders.push(
-      new Order('4', '4', 'Laura', new Date(2021, 11, 3), new Date(2021, 9, 15))
+      new Order(
+        nanoid(),
+        nanoid(),
+        'Jack',
+        new Date(2021, 10, 10),
+        new Date(2021, 9, 9)
+      )
     );
     this._orders.push(
       new Order(
-        '5',
+        nanoid(),
+        nanoid(),
+        'Sara',
+        new Date(2021, 10, 25),
+        new Date(2021, 9, 10)
+      )
+    );
+    this._orders.push(
+      new Order(
+        nanoid(),
+        nanoid(),
+        'Mike',
+        new Date(2021, 9, 28),
+        new Date(2021, 9, 10)
+      )
+    );
+    this._orders.push(
+      new Order(
+        nanoid(),
+        nanoid(),
+        'Laura',
+        new Date(2021, 11, 3),
+        new Date(2021, 9, 15)
+      )
+    );
+    this._orders.push(
+      new Order(
+        nanoid(),
         'ba951056-35b2-4309-ac56-b9d1cfdc2c3f',
         'Oleg',
         new Date(2021, 11, 18),
@@ -44,13 +76,8 @@ export class TestOrdersRepositoryService extends OrdersRepository {
     );
   }
 
-  getRepositoryStream(): Observable<Array<Order> | Order> {
+  getRepositoryStream(): Observable<Array<Order>> {
     return this._repositoryStream$;
-  }
-
-  streamOrder(orderId: string): void {
-    let order = this._orders.find((o) => (o.orderId = orderId));
-    if (order) this._repositoryStream$.next(cloneDeep(order));
   }
 
   // with network latency imitation
@@ -62,9 +89,20 @@ export class TestOrdersRepositoryService extends OrdersRepository {
     else this._repositoryStream$.next(orders);
   }
 
-  addOrder(order: Order): void {
-    this._orders.push(order);
+  addOrder(arrivalDate: Date): void {
+    const activeUser = this._userStream$.value as User;
+    const newOrder = new Order(
+      nanoid(),
+      activeUser.id,
+      activeUser.firstName,
+      arrivalDate,
+      new Date(Date.now())
+    );
+    this._orders.push(newOrder);
     this.streamOrders();
+    this._messagesStream$.next(
+      new Message('Order successfully created.', MessageStatus.Success)
+    );
   }
 
   removeOrder(orderId: string): void {

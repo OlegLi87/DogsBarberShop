@@ -1,0 +1,22 @@
+@import '../my-theme'
+    
+$primaryColor: map-get($my-primary,text)
+$accentColor: map-get($my-accent,text)
+$warnColor: #F54D40
+$modalBackgroundColor: #000000ab
+
+@mixin button-box-shadow($width, $color: $warnColor) 
+   box-shadow: 0 0 $width $color
+
+@mixin main-gradient($direction: to right)
+   background: linear-gradient($direction, $primaryColor, $warnColor) !important
+
+@mixin modal()
+   display: grid
+   place-items: center
+   height: 100vh
+   width: 100%
+   background-color: $modalBackgroundColor 
+   position: fixed
+   top: 0
+   left: 0

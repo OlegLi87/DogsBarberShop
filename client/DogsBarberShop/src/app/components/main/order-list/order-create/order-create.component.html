@@ -1,0 +1,10 @@
+<button mat-mini-fab color="warn" class="close-btn" (click)="onCloseClicked()">
+  <mat-icon>close icon</mat-icon>
+</button>
+
+<order-details-edit
+  [style.height.em]="15"
+  [isOnCreateMode]="true"
+  [arrivalDate]="currentDate"
+  (saved)="closed.emit()"
+></order-details-edit>

@@ -9,22 +9,19 @@ import { OrdersRepository } from 'src/app/services/repositories/OrdersRepository
   styleUrls: ['./order-details-edit.component.sass'],
 })
 export class OrderDetailsEditComponent implements OnInit {
+  @Input() isOnCreateMode = false;
   @Input() arrivalDate!: Date;
   @Input() orderId!: string;
   @Output() saved = new EventEmitter<void>();
 
   private _datePipe = new DatePipe('en');
   clonedDate!: Date;
-  minDate = new Date(Date.now());
+  minDate = new Date();
 
   constructor(private _ordersRepostory: OrdersRepository) {}
 
   ngOnInit(): void {
     this.clonedDate = new Date(this.arrivalDate.getTime());
-  }
-
-  ngDoCheck(): void {
-    console.log('%c Checking in order-details-edit', 'color: blue');
   }
 
   onDateChanged(event: MatDatepickerInputEvent<any, any>): void {
@@ -35,10 +32,11 @@ export class OrderDetailsEditComponent implements OnInit {
   }
 
   onSaveClicked(): void {
-    this._ordersRepostory.updateOrder(this.orderId, {
-      arrivalTime: this.clonedDate,
-    });
-    this.clonedDate = this.arrivalDate;
+    if (this.isOnCreateMode) this._ordersRepostory.addOrder(this.clonedDate);
+    else
+      this._ordersRepostory.updateOrder(this.orderId, {
+        arrivalTime: this.clonedDate,
+      });
     this.saved.emit();
   }
 

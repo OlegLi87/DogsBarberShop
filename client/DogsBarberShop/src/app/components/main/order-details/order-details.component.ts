@@ -38,18 +38,14 @@ export class OrderDetailsComponent implements OnInit {
   constructor(
     @Inject(USER_STREAM) private _userStream$: UserStream,
     @Inject(CONFIRM_MESSAGE_STREAM)
-    private _confirmMessageStream: ConfirmMessageStream,
+    private _confirmMessageStream$: ConfirmMessageStream,
     private _ordersRepository: OrdersRepository
   ) {}
 
   ngOnInit(): void {}
 
-  ngDoCheck(): void {
-    console.log('%c Checking in order-details', 'color: green');
-  }
-
   removeOrder(): void {
-    this._confirmMessageStream.next(
+    this._confirmMessageStream$.next(
       new ConfirmMessage(
         'Are you sure to delete your order?',
         this._ordersRepository.removeOrder.bind(
@@ -67,7 +63,7 @@ export class OrderDetailsComponent implements OnInit {
       this.editComponent.clonedDate.getTime() !==
         this.order.arrivalTime.getTime()
     ) {
-      this._confirmMessageStream.next(
+      this._confirmMessageStream$.next(
         new ConfirmMessage(
           'All changes will be lost.Are you sure to exit?',
           () => {

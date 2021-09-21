@@ -1,4 +1,4 @@
-@import './my-theme'
+@import '_shared'
 @import url('https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap')
 
 * 
@@ -12,7 +12,7 @@ html,body
 .timepicker 
   
   .timepicker__header 
-    background-image: linear-gradient(to left,$warnColor,$primaryColor) !important
+    @include main-gradient()
   
   .clock-face__clock-hand 
     background-color: $primaryColor !important
@@ -32,5 +32,15 @@ html,body
 
   button:not(.timepicker-dial__item) 
     color: $primaryColor !important
+
+button[mat-fab]  
+    &.lg
+      width: 7em
+      height: 7em
+    
+    &.md
+      width: 3.5em
+      height: 3.5em
+    
  
       

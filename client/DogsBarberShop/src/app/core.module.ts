@@ -1,5 +1,5 @@
+import { OrderCreateComponent } from './components/main/order-list/order-create/order-create.component';
 import { OrderDetailsEditComponent } from './components/main/order-details/order-details-edit/order-details-edit.component';
-import { DateTimePickerDirective } from './directives/date-time-picker.directive';
 import { OrderListItemComponent } from './components/main/order-list/order-list-item/order-list-item.component';
 import { confirmMessageStreamProvide } from './infastructure/di_providers/confirmMessageStream.provider';
 import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
@@ -40,8 +40,8 @@ const components = [
   OrderListItemComponent,
   OrderDetailsComponent,
   OrderDetailsEditComponent,
+  OrderCreateComponent,
   ConfirmModalComponent,
-  DateTimePickerDirective,
 ];
 const diProviders = [
   userStreamProvider,

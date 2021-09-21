@@ -1,15 +1,9 @@
-@import '../../../../my-theme'
+@import '_shared'
 
 :host 
-    position: fixed
-    top: 0
-    left: 0
-    width: 100vw
-    height: 100vh
+    @include modal
     background-color: darken($modalBackgroundColor, 100%)
     z-index: 2
-    display: grid
-    place-items: center
 
 .close-btn
     position: inherit

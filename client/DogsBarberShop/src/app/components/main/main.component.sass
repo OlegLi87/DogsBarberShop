@@ -1,9 +1,18 @@
+@import '_shared'
+
 :host 
     display: block
     padding: 0 12vw 
+    padding-bottom: 3em
     
 .btn.logout 
     position: fixed
     top: 2em
     right: 2em
+
+    &:hover
+        @include button-box-shadow(7px)
+
+    &:active
+        @include button-box-shadow(14px)
 

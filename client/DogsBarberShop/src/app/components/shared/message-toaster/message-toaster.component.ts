@@ -2,7 +2,7 @@ import {
   MessagesStream,
   MESSAGES_STREAM,
 } from '../../../infastructure/di_providers/messagesStream.provider';
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { Message, MessageStatus } from 'src/app/models/Message';
 import { AppConfig } from 'src/app/infastructure/di_providers/appConfig.provider';
 import { NavigationEnd, Router } from '@angular/router';
@@ -20,7 +20,8 @@ export class MessageToasterComponent implements OnInit {
   constructor(
     private router: Router,
     @Inject(MESSAGES_STREAM) private _messagesStream$: MessagesStream,
-    @Inject('appConfig') private _appConfig: AppConfig
+    @Inject('appConfig') private _appConfig: AppConfig,
+    private _changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +33,7 @@ export class MessageToasterComponent implements OnInit {
 
   saveMessage(message: Message): void {
     this.message = message;
+    this._changeDetectorRef.detectChanges(); // in case exception prevents change detection in component
     setTimeout(() => {
       this.message = null;
     }, this._displayTime);

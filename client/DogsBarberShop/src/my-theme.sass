@@ -7,9 +7,4 @@ $my-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400)
 
 $my-theme: mat.define-light-theme($my-primary, $my-accent)
 
-$primaryColor: map-get($my-primary,text)
-$accentColor: map-get($my-accent,text)
-$warnColor: #F54D40
-$modalBackgroundColor: #000000ab
-
 @include mat.all-component-themes($my-theme)

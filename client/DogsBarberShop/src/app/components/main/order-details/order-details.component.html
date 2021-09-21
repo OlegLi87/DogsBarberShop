@@ -37,6 +37,6 @@
     [arrivalDate]="order.arrivalTime"
     [orderId]="order.orderId"
     [@editRotation]="animationState"
-    (saved)="onClosedClicked()"
+    (saved)="closed.emit()"
   ></order-details-edit>
 </div>

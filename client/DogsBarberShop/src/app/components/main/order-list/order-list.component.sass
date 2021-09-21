@@ -1,43 +1,73 @@
-@import '../../../../my-theme'
+@import '_shared'
+
+@mixin diagonalBand 
+    content: ''
+    display: block
+    position: absolute
+    width: 0.5em
+    height: 5em
+    transform: rotateZ(45deg)
+    background-color: white
 
 :host
     display: block
     
 h1
+    @include main-gradient()
     text-align: center
     margin: 0
     font-size: clamp(15px,8vw,50px)
     font-family: inherit
     line-height: normal    
     padding: 0.5em 0
-    background-image: linear-gradient(to left,$warnColor,$primaryColor)
     color: white
     position: relative
     overflow: hidden
 
     &::after
-        content: ''
-        display: block
-        position: absolute
+        @include diagonalBand  
         bottom: -1.5em
         right: 0.5em
-        width: 0.5em
-        height: 5em
-        transform: rotateZ(45deg)
-        background-color: white
+        
 
     &::before
-        content: ''
-        display: block
-        position: absolute
+        @include diagonalBand 
         bottom: -1.5em
         left: 0.2em
-        width: 0.5em
-        height: 5em
-        transform: rotateZ(45deg)
-        background-color: white
 
 .orders-container
     margin-top: 1em
     display: grid
     grid-gap: 0.5em
+
+    .add-order-container
+        display: flex
+        justify-content: center
+
+    .add-order-btn
+        @include main-gradient()
+        color: white
+        padding: 1em
+        display: flex
+        align-items: center
+        border-radius: 5px
+        transition: box-shadow 0.05s linear
+
+        &:hover
+          cursor: pointer
+          @include button-box-shadow(10px)
+
+        &:active
+          @include button-box-shadow(20px)
+
+        h2
+          font-family: inherit
+
+        & > *
+            margin: 0 0.5em
+
+
+
+
+        
+

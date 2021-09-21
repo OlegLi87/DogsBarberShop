@@ -8,5 +8,5 @@ import { NavigationService } from './services/navigation.service';
   providers: [NavigationService],
 })
 export class AppComponent {
-  constructor(private navigationService: NavigationService) {}
+  constructor(private _navigationService: NavigationService) {}
 }
