@@ -4,14 +4,16 @@ using DogsBarberShop_Api.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DogsBarberShop_Api.Migrations
 {
     [DbContext(typeof(DogsBarberShopDbContext))]
-    partial class DogsBarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210921172925_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,10 +99,10 @@ namespace DogsBarberShop_Api.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderTime")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

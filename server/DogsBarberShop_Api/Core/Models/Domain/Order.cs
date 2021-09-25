@@ -10,15 +10,12 @@ namespace DogsBarberShop_Api.Core.Models.Domain
         [Key]
         public Guid Id { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [Column(TypeName = "smalldatetime")]
         public DateTime OrderTime { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [Column(TypeName = "smalldatetime")]
         public DateTime ArrivalTime { get; set; }
-        public virtual AppUser AppUser { get; set; }
-
-        [Required]
-        [ForeignKey("AppUser")]
         public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

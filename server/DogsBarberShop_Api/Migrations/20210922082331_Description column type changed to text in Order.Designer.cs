@@ -4,14 +4,16 @@ using DogsBarberShop_Api.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DogsBarberShop_Api.Migrations
 {
     [DbContext(typeof(DogsBarberShopDbContext))]
-    partial class DogsBarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210922082331_Description column type changed to text in Order")]
+    partial class DescriptioncolumntypechangedtotextinOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,6 +100,9 @@ namespace DogsBarberShop_Api.Migrations
 
                     b.Property<DateTime>("ArrivalTime")
                         .HasColumnType("smalldatetime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("smalldatetime");

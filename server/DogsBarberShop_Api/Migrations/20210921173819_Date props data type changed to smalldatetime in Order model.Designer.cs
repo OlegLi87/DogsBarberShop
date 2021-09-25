@@ -4,14 +4,16 @@ using DogsBarberShop_Api.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DogsBarberShop_Api.Migrations
 {
     [DbContext(typeof(DogsBarberShopDbContext))]
-    partial class DogsBarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210921173819_Date props data type changed to smalldatetime in Order model")]
+    partial class DatepropsdatatypechangedtosmalldatetimeinOrdermodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

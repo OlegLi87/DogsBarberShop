@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DogsBarberShop_Api.Migrations
 {
     [DbContext(typeof(DogsBarberShopDbContext))]
-    [Migration("20210811152853_Property AppUserId in Order model changed to required")]
-    partial class PropertyAppUserIdinOrdermodelchangedtorequired
+    [Migration("20210922082814_Description prop removed from Order")]
+    partial class DescriptionpropremovedfromOrder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,6 +54,9 @@ namespace DogsBarberShop_Api.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -93,19 +96,19 @@ namespace DogsBarberShop_Api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AppUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("smalldatetime");
 
                     b.Property<DateTime>("OrderTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("smalldatetime");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.ToTable("Orders");
                 });
@@ -246,8 +249,7 @@ namespace DogsBarberShop_Api.Migrations
                     b.HasOne("DogsBarberShop_Api.Core.Models.Domain.AppUser", "AppUser")
                         .WithOne("Order")
                         .HasForeignKey("DogsBarberShop_Api.Core.Models.Domain.Order", "AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("AppUser");
                 });

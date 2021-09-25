@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NLog.Extensions.Logging;
 
 namespace DogsBarberShop_Api.Infastructure.ExtensionMethods
 {
@@ -16,10 +18,13 @@ namespace DogsBarberShop_Api.Infastructure.ExtensionMethods
     {
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configs)
         {
+            LoggerFactory loggerFactory = new LoggerFactory(new[] { new NLogLoggerProvider() });
+
             services.AddDbContext<DogsBarberShopDbContext>(opts =>
             {
                 opts.UseSqlServer(configs.GetConnectionString("DogsBarberShopDb"));
-                opts.UseLazyLoadingProxies();
+                opts.EnableSensitiveDataLogging();
+                opts.UseLoggerFactory(loggerFactory);
             });
         }
 
