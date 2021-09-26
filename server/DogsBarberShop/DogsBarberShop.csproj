@@ -8,6 +8,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DogsBarberShop.Persistence\DogsBarberShop.Persistence.csproj" />
     <ProjectReference Include="..\DogsBarberShop.Services\DogsBarberShop.Services.csproj" />
+    <ProjectReference Include="..\DogsbarberShop.Controllers\DogsbarberShop.Controllers.csproj" />
+    <ProjectReference Include="..\DogsBarberShop.Entities\DogsBarberShop.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

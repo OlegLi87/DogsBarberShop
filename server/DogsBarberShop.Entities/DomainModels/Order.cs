@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DogsBarberShop.Entities.Models.Interfaces;
+using DogsBarberShop.Entities.DomainModels.Interfaces;
 
-namespace DogsBarberShop.Entities.Models
+namespace DogsBarberShop.Entities.DomainModels
 {
     public class Order : IEntity, IDateTrackableEntity
     {

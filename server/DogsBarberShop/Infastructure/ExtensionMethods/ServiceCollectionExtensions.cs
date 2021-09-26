@@ -1,7 +1,7 @@
 using System;
 using System.Text;
-using DogsBarberShop.Entities.Models;
-using DogsBarberShop.Models;
+using DogsBarberShop.Entities.DomainModels;
+using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

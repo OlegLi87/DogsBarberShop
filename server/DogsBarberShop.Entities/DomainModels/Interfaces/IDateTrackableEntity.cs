@@ -1,6 +1,6 @@
 using System;
 
-namespace DogsBarberShop.Entities.Models.Interfaces
+namespace DogsBarberShop.Entities.DomainModels.Interfaces
 {
     public interface IDateTrackableEntity
     {

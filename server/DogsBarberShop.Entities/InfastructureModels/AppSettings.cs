@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DogsBarberShop.Models
+namespace DogsBarberShop.Entities.InfastructureModels
 {
     public class AppSettings
     {

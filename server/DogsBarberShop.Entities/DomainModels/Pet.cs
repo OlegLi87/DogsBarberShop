@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using DogsBarberShop.Entities.Models.Interfaces;
+using DogsBarberShop.Entities.DomainModels.Interfaces;
 
-namespace DogsBarberShop.Entities.Models
+namespace DogsBarberShop.Entities.DomainModels
 {
     public class Pet : IEntity
     {

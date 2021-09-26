@@ -1,5 +1,7 @@
+using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Infastructure.ExtensionMethods;
-using DogsBarberShop.Models;
+using DogsBarberShop.Services.AuthService;
+using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,9 @@ namespace DogsBarberShop
             services.ConfigureIdentity();
             services.ConfigureJwtAuthentication();
             services.ConfigureCors();
+
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUtilsService, UtilsService>();
 
             services.AddMvc();
         }

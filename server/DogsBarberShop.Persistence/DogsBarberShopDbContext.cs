@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DogsBarberShop.Entities.Models;
-using DogsBarberShop.Entities.Models.Interfaces;
+using DogsBarberShop.Entities.DomainModels;
+using DogsBarberShop.Entities.DomainModels.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
