@@ -31,12 +31,16 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
         {
             services.AddIdentity<User, IdentityRole>(opts =>
             {
+                opts.User.RequireUniqueEmail = true;
+
                 opts.Password.RequiredLength = 5;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<DogsBarberShopDbContext>();
+            })
+            .AddEntityFrameworkStores<DogsBarberShopDbContext>()
+            .AddDefaultTokenProviders();
 
             return services;
         }

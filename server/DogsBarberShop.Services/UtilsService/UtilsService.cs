@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
 using DogsbarberShop.Entities.InfrastructureModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 
 namespace DogsBarberShop.Services.UtilsService
 {
@@ -45,7 +48,7 @@ namespace DogsBarberShop.Services.UtilsService
         public string GetHostUrl()
         {
             var request = _contextAccessor.HttpContext.Request;
-            return $"{request.Scheme}//{request.Host}";
+            return $"{request.Scheme}://{request.Host}";
         }
 
         public string GetClientUrl()
@@ -53,6 +56,20 @@ namespace DogsBarberShop.Services.UtilsService
             var request = _contextAccessor.HttpContext.Request;
             var clientUrl = request.Headers["Origin"];
             return clientUrl == default(StringValues) ? string.Empty : clientUrl;
+        }
+
+        public string SerializeToBae64<T>(T obj)
+        {
+            var json = JsonConvert.SerializeObject(obj);
+            var jsonBytes = Encoding.ASCII.GetBytes(json);
+            return Convert.ToBase64String(jsonBytes);
+        }
+
+        public T DeserializeFromBase64<T>(string base64String)
+        {
+            var jsonBytes = Convert.FromBase64String(base64String);
+            var json = Encoding.ASCII.GetString(jsonBytes);
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

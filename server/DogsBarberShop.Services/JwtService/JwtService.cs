@@ -61,6 +61,7 @@ namespace DogsBarberShop.Services.JwtService
 
             allClaims.Add(new Claim("id", user.Id));
             allClaims.Add(new Claim("userName", user.UserName));
+            allClaims.Add(new Claim("email", user.Email));
             allClaims.Add(new Claim("firstName", firstName));
 
             return allClaims;

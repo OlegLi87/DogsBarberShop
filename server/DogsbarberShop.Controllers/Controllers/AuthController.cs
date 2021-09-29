@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
 using DogsbarberShop.Entities.InfrastructureModels;
+using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,9 @@ namespace DogsbarberShop.Controllers.Controllers
     [Route("api/{controller}")]
     public sealed class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthService<User> _authService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService<User> authService)
         {
             _authService = authService;
         }
@@ -27,9 +28,17 @@ namespace DogsbarberShop.Controllers.Controllers
 
         [HttpPost]
         [Route("signin")]
-        public IActionResult SignIn(SignInCredentials credentials)
+        public async Task<string> SignIn(SignInCredentials credentials)
         {
-            return NotFound();
+            var result = await _authService.SignIn(credentials);
+            return result.Payload.ResponseObject;
+        }
+
+        [HttpGet]
+        [Route("confirmEmail/{confirmData}")]
+        public async Task<AppResponse<string>> ConfirmEmail([FromRoute] string confirmData)
+        {
+            return await _authService.ConfirmEmail(confirmData);
         }
     }
 }
