@@ -1,6 +1,8 @@
+using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Infastructure.ExtensionMethods;
 using DogsBarberShop.Services.AuthService;
+using DogsBarberShop.Services.JwtService;
 using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +27,10 @@ namespace DogsBarberShop
             services.ConfigureCors();
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IJwtService<User>, JwtService>();
             services.AddScoped<IUtilsService, UtilsService>();
+
+            services.AddHttpContextAccessor(); // for accessing HttpContext in custom components
 
             services.AddMvc();
         }

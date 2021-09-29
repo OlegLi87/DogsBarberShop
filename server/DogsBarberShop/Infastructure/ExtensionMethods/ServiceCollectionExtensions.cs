@@ -17,7 +17,7 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
         public static IServiceCollection ConfigureDbContext(this IServiceCollection services)
         {
             var appSettings = services.GetService<IOptions<AppSettings>>().Value;
-            var connectionString = appSettings.ConnectionStrings["s"];
+            var connectionString = appSettings.ConnectionStrings["dev"];
 
             return services.AddDbContext<DogsBarberShopDbContext>(opts =>
             {
@@ -44,8 +44,7 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
         public static IServiceCollection ConfigureJwtAuthentication(this IServiceCollection services)
         {
             var appSettings = services.GetService<IOptions<AppSettings>>().Value;
-            var jwtSecret = appSettings.JwtSecret;
-            var secretBytes = Encoding.ASCII.GetBytes(jwtSecret);
+            var secretBytes = Encoding.ASCII.GetBytes(appSettings.JwtSecret);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(jwt =>

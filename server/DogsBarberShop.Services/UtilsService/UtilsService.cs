@@ -1,27 +1,21 @@
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using DogsbarberShop.Entities.InfrastructureModels;
-using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Primitives;
 
 namespace DogsBarberShop.Services.UtilsService
 {
     public class UtilsService : IUtilsService
     {
-        private readonly UserManager<User> _userManager;
         private readonly AppSettings _appSetings;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public UtilsService(UserManager<User> userManager, IOptions<AppSettings> opts)
+        public UtilsService(IOptions<AppSettings> opts, IHttpContextAccessor contextAccessor)
         {
-            _userManager = userManager;
             _appSetings = opts.Value;
+            _contextAccessor = contextAccessor;
         }
 
         public AppResponse<T> CreateResponseWithErrors<T>(IEnumerable<string> errors, ushort statusCode = 400)
@@ -48,24 +42,17 @@ namespace DogsBarberShop.Services.UtilsService
             };
         }
 
-        public async string GenerateJwtToken(User user, IEnumerable<Claim> claims)
+        public string GetHostUrl()
         {
-            var jwtSecret = _appSetings.JwtSecret;
-            var secretBytes = Encoding.ASCII.GetBytes(jwtSecret);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[] {
-                  new Claim("Id",user.Id,ClaimValueTypes.String),
-               }),
-            };
+            var request = _contextAccessor.HttpContext.Request;
+            return $"{request.Scheme}//{request.Host}";
         }
 
-        public async Task<string> GenerateJwtTokenAsync(User user)
+        public string GetClientUrl()
         {
-
+            var request = _contextAccessor.HttpContext.Request;
+            var clientUrl = request.Headers["Origin"];
+            return clientUrl == default(StringValues) ? string.Empty : clientUrl;
         }
     }
 }

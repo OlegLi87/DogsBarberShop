@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DogsBarberShop.Entities\DogsBarberShop.Entities.csproj" />
+    <ProjectReference Include="..\DogsBarberShop.Services\DogsBarberShop.Services.csproj" />
   </ItemGroup>
 
 </Project>

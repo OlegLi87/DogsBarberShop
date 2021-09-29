@@ -16,9 +16,7 @@ namespace DogsBarberShop.Entities.DomainModels
         [Required]
         [Column(TypeName = "smalldatetime")]
         public DateTime? ArrivalDate { get; set; }
-
-        [Required]
-        public Guid? PetId { get; set; }
+        public Guid PetId { get; set; }
         public Pet Pet { get; set; }
     }
 }

@@ -1,4 +1,7 @@
+using System.Threading.Tasks;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
+using DogsbarberShop.Entities.InfrastructureModels;
+using DogsBarberShop.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DogsbarberShop.Controllers.Controllers
@@ -7,11 +10,19 @@ namespace DogsbarberShop.Controllers.Controllers
     [Route("api/{controller}")]
     public sealed class AuthController : ControllerBase
     {
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
         [HttpPost]
         [Route("signup")]
-        public IActionResult SignUp(SignUpCredentials credentials)
+        public async Task<string> SignUp(SignUpCredentials credentials)
         {
-            return Ok();
+            var res = await _authService.SignUp(credentials);
+            return res.Payload.ResponseObject;
         }
 
         [HttpPost]
