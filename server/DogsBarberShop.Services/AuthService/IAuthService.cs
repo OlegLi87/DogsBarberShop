@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
 using DogsbarberShop.Entities.InfrastructureModels;
+using DogsBarberShop.Entities.Dtos.PasswordReset;
 using Microsoft.AspNetCore.Identity;
 
 namespace DogsBarberShop.Services.AuthService
@@ -11,5 +12,6 @@ namespace DogsBarberShop.Services.AuthService
         Task<AppResponse<string>> SignIn(SignInCredentials credentials);
         Task SendEmailConfirmationLink(T user, string emailConfirmationUrl);
         Task<AppResponse<string>> ConfirmEmail(string token, string email);
+        Task<AppResponse<string>> SendResetPasswordLink(ForgotPasswordData forgotPasswordData);
     }
 }

@@ -11,6 +11,7 @@ namespace DogsBarberShop.Entities.InfastructureModels
         public SmtpSettings Smtp { get; set; }
         public bool Migrate { get; set; }
         public string ConfirmEmailPath { get; set; }
+        public string ResetPasswordPath { get; set; }
         public struct ConnectionStringsSettings
         {
             public string DogsBarberShop_Dev { get; set; }
