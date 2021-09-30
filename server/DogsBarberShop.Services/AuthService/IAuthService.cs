@@ -9,7 +9,7 @@ namespace DogsBarberShop.Services.AuthService
     {
         Task<AppResponse<string>> SignUp(SignUpCredentials credentials);
         Task<AppResponse<string>> SignIn(SignInCredentials credentials);
-        Task<string> GenerateEmailConfirmationLink(T user);
-        Task<AppResponse<string>> ConfirmEmail(string confirmationData);
+        Task SendEmailConfirmationLink(T user, string emailConfirmationUrl);
+        Task<AppResponse<string>> ConfirmEmail(string token, string email);
     }
 }

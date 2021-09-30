@@ -15,5 +15,8 @@ namespace DogsbarberShop.Entities.Dtos.UserCredentials
         [Required(ErrorMessage = "Email is missing.")]
         [EmailAddress(ErrorMessage = "Provided email is in wrong format.")]
         public string Email { get; set; }
+
+        [Url(ErrorMessage = "Provided email confirmation link is in wrong format.")]
+        public string EmailConfirmationUrl { get; set; }
     }
 }

@@ -35,10 +35,10 @@ namespace DogsbarberShop.Controllers.Controllers
         }
 
         [HttpGet]
-        [Route("confirmEmail/{confirmData}")]
-        public async Task<AppResponse<string>> ConfirmEmail([FromRoute] string confirmData)
+        [Route("confirmEmail")]
+        public async Task<AppResponse<string>> ConfirmEmail([FromQuery] string token, [FromQuery] string email)
         {
-            return await _authService.ConfirmEmail(confirmData);
+            return await _authService.ConfirmEmail(token, email);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace DogsBarberShop.Entities.InfastructureModels
         public IEnumerable<string> ApplicationUrls { get; set; }
         public SmtpSettings Smtp { get; set; }
         public bool Migrate { get; set; }
+        public string ConfirmEmailPath { get; set; }
         public struct ConnectionStringsSettings
         {
             public string DogsBarberShop_Dev { get; set; }
