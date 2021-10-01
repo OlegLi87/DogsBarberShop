@@ -48,5 +48,13 @@ namespace DogsbarberShop.Controllers.Controllers
         {
             return await _authService.SendResetPasswordLink(forgotPasswordData);
         }
+
+        [HttpPost]
+        [Route("resetPassword")]
+        public async Task<AppResponse<string>> ResetPassword(ResetPasswordData passwordData, [FromQuery] string token,
+                                                              [FromQuery] string email)
+        {
+            return await _authService.ResetPassword(passwordData.Password, token, email);
+        }
     }
 }

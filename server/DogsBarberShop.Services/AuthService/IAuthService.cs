@@ -13,5 +13,6 @@ namespace DogsBarberShop.Services.AuthService
         Task SendEmailConfirmationLink(T user, string emailConfirmationUrl);
         Task<AppResponse<string>> ConfirmEmail(string token, string email);
         Task<AppResponse<string>> SendResetPasswordLink(ForgotPasswordData forgotPasswordData);
+        Task<AppResponse<string>> ResetPassword(string newPassword, string token, string email);
     }
 }

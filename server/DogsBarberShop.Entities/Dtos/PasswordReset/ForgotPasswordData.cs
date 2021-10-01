@@ -8,7 +8,8 @@ namespace DogsBarberShop.Entities.Dtos.PasswordReset
         [EmailAddress(ErrorMessage = "Email is in wrong format.")]
         public string Email { get; set; }
 
-        [Url(ErrorMessage = "Password reset url is in wrong format.")]
+        [Required(ErrorMessage = "Reset password url is missing.")]
+        [Url(ErrorMessage = "Reset password url is in wrong format.")]
         public string ResetPasswordUrl { get; set; }
     }
 }

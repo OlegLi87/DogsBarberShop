@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
@@ -14,8 +13,6 @@ using DogsBarberShop.Services.JwtService;
 using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 
 namespace DogsBarberShop.Services.AuthService
@@ -72,8 +69,14 @@ namespace DogsBarberShop.Services.AuthService
         public async Task SendEmailConfirmationLink(User user, string emailConfirmationUrl)
         {
             var link = await generateEmailConfirmationLink(user, emailConfirmationUrl);
-            var emailMessage = $"To confirm your email please follow this link <a>{link}</a>";
-            await _emailService.SendEmailAsync(user.Email, emailMessage);
+            var message = $"To confirm your email please follow this link <a>{link}</a>";
+            var emailMessage = new EmailMessage
+            {
+                Address = user.Email,
+                Subject = "Email confirmation link.",
+                Message = message
+            };
+            await _emailService.SendEmailAsync(emailMessage);
         }
 
         public async Task<AppResponse<string>> ConfirmEmail(string token, string email)
@@ -90,13 +93,33 @@ namespace DogsBarberShop.Services.AuthService
         {
             var userInDb = await _userManager.FindByEmailAsync(forgotPasswordData.Email);
             if (userInDb is null)
-                return _utilsService.CreateResponseWithErrors<string>(new string[] { "No user with provided email." });
+                return _utilsService.CreateResponseWithErrors<string>(new string[] { "Provided credentials are invalid." });
+
+            var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(userInDb);
+            if (!isEmailConfirmed)
+                return _utilsService.CreateResponseWithErrors<string>(new string[] { "Email must be confirmed" }, 401);
 
             var link = await generateResetPasswordLink(userInDb, forgotPasswordData.ResetPasswordUrl);
             var message = $"In order to reset your password please follow this link <a>{link}</a>";
-            await _emailService.SendEmailAsync(userInDb.Email, message);
+            var emailMessage = new EmailMessage
+            {
+                Address = userInDb.Email,
+                Subject = "Reset password link.",
+                Message = message,
+            };
+            await _emailService.SendEmailAsync(emailMessage);
 
             return _utilsService.CreateResponseWithPayload<string>("Reset password link was sent to your email.");
+        }
+
+        public async Task<AppResponse<string>> ResetPassword(string newPassword, string token, string email)
+        {
+            var userInDb = await _userManager.FindByEmailAsync(email);
+            var resetResult = await _userManager.ResetPasswordAsync(userInDb, token, newPassword);
+            if (!resetResult.Succeeded)
+                return _utilsService.CreateResponseWithErrors<string>(resetResult.Errors.Select(e => e.Description));
+
+            return _utilsService.CreateResponseWithPayload<string>("Password successfuly changed.");
         }
 
         private async Task<string> generateEmailConfirmationLink(User user, string emailConfirmationUrl)
@@ -124,9 +147,6 @@ namespace DogsBarberShop.Services.AuthService
                 ["token"] = resetToken,
                 ["email"] = user.Email
             };
-
-            if (string.IsNullOrEmpty(resetPasswordUrl))
-                resetPasswordUrl = $"{_utilsService.GetHostUrl()}/{_appSettings.ResetPasswordPath}";
 
             return QueryHelpers.AddQueryString(resetPasswordUrl, queryParams);
         }

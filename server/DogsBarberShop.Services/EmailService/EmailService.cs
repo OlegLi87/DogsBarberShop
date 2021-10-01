@@ -15,9 +15,9 @@ namespace DogsBarberShop.Services.EmailService
             _appSettings = opts.Value;
         }
 
-        public async Task SendEmailAsync(string address, string messageBody)
+        public async Task SendEmailAsync(EmailMessage emailMessage)
         {
-            var message = createMessageToSend(address, messageBody);
+            var message = createMessageToSend(emailMessage);
 
             using (var client = new SmtpClient())
             {
@@ -28,19 +28,21 @@ namespace DogsBarberShop.Services.EmailService
             }
         }
 
-        private MimeMessage createMessageToSend(string address, string messageBody)
+        private MimeMessage createMessageToSend(EmailMessage emailMessage)
         {
             var message = new MimeMessage();
 
             var from = new MailboxAddress("Dogs Barber Shop", "oleglivcha@gmail.com");
-            var to = new MailboxAddress(address);
+            var to = new MailboxAddress(emailMessage.Address);
 
             message.From.Add(from);
             message.To.Add(to);
-            message.Subject = "Email confirmation link.";
+            message.Subject = emailMessage.Subject;
 
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = messageBody;
+            if (emailMessage.BodyType == EmailMessage.EmailMessageBodyType.Html)
+                bodyBuilder.HtmlBody = emailMessage.Message;
+            else bodyBuilder.TextBody = emailMessage.Message;
 
             message.Body = bodyBuilder.ToMessageBody();
             return message;
