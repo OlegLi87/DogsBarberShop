@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace DogsbarberShop.Controllers.Controllers
 {
@@ -8,6 +9,9 @@ namespace DogsbarberShop.Controllers.Controllers
     [Authorize]
     public sealed class OrdersController : ControllerBase
     {
-
+        public IActionResult GetOrders()
+        {
+            return Ok();
+        }
     }
 }

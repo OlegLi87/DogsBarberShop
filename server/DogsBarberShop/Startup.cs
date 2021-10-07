@@ -1,3 +1,4 @@
+using DogsbarberShop.Controllers.Filters;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Infastructure.ExtensionMethods;
@@ -28,6 +29,7 @@ namespace DogsBarberShop
             services.ConfigureIdentity();
             services.ConfigureJwtAuthentication();
             services.ConfigureCors();
+            services.ConfigureMvc();
 
             services.AddScoped<IAuthService<User>, AuthService>();
             services.AddScoped<IJwtService<User>, JwtService>();
@@ -35,8 +37,6 @@ namespace DogsBarberShop
             services.AddScoped<IEmailService, EmailService>();
 
             services.AddHttpContextAccessor(); // for accessing HttpContext in custom components
-
-            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<AppSettings> settingsOpts)
@@ -47,6 +47,7 @@ namespace DogsBarberShop
 
             app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.ConfigureEndpoints();
 

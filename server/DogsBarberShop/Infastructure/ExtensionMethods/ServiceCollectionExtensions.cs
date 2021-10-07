@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DogsbarberShop.Controllers.Filters;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Persistence;
@@ -50,21 +51,25 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
             var appSettings = services.GetService<IOptions<AppSettings>>().Value;
             var secretBytes = Encoding.ASCII.GetBytes(appSettings.JwtSecret);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(jwt =>
-                    {
-                        jwt.RequireHttpsMetadata = false;
-                        jwt.SaveToken = true;
+            services.AddAuthentication(opts =>
+            {
+                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwt =>
+              {
+                  jwt.RequireHttpsMetadata = false;
+                  jwt.SaveToken = true;
 
-                        jwt.TokenValidationParameters.ValidateIssuerSigningKey = true;
-                        jwt.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(secretBytes);
-                        jwt.TokenValidationParameters.ValidateIssuer = true;
-                        jwt.TokenValidationParameters.ValidIssuers = appSettings.ApplicationUrls;
-                        jwt.TokenValidationParameters.ValidateAudience = true;
-                        jwt.TokenValidationParameters.ValidAudiences = appSettings.Cors.AllowedOrigins;
-                        jwt.TokenValidationParameters.ValidateLifetime = true;
-                        jwt.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
-                    });
+                  jwt.TokenValidationParameters.ValidateIssuerSigningKey = true;
+                  jwt.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(secretBytes);
+                  jwt.TokenValidationParameters.ValidateIssuer = true;
+                  jwt.TokenValidationParameters.ValidIssuers = appSettings.ApplicationUrls;
+                  jwt.TokenValidationParameters.ValidateAudience = true;
+                  jwt.TokenValidationParameters.ValidAudiences = appSettings.Cors.AllowedOrigins;
+                  jwt.TokenValidationParameters.ValidateLifetime = true;
+                  jwt.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
+              });
 
             return services;
         }
@@ -83,6 +88,16 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
                     foreach (var origin in appSettings.Cors.AllowedOrigins)
                         builder.WithOrigins(origin);
                 });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureMvc(this IServiceCollection services)
+        {
+            services.AddMvc(opts =>
+            {
+                opts.Filters.Add<ModifyResultFilter>();
             });
 
             return services;

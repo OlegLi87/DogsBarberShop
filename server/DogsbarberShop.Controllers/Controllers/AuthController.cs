@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DogsbarberShop.Controllers.Filters;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
 using DogsbarberShop.Entities.InfrastructureModels;
 using DogsBarberShop.Entities.DomainModels;
@@ -21,18 +22,18 @@ namespace DogsbarberShop.Controllers.Controllers
 
         [HttpPost]
         [Route("signup")]
-        public async Task<string> SignUp(SignUpCredentials credentials)
+        public async Task<AppResponse<string>> SignUp(SignUpCredentials credentials)
         {
-            var res = await _authService.SignUp(credentials);
-            return res.Payload.ResponseObject;
+            return await _authService.SignUp(credentials);
         }
 
         [HttpPost]
         [Route("signin")]
-        public async Task<string> SignIn(SignInCredentials credentials)
+        // Users can only signin with Origin header in request.
+        [TypeFilter(typeof(HeadersResourceFilter), Arguments = new[] { nameof(SignIn) })]
+        public async Task<AppResponse<string>> SignIn(SignInCredentials credentials)
         {
-            var result = await _authService.SignIn(credentials);
-            return result.Payload.ResponseObject;
+            return await _authService.SignIn(credentials);
         }
 
         [HttpGet]

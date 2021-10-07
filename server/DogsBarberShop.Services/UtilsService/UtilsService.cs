@@ -51,11 +51,11 @@ namespace DogsBarberShop.Services.UtilsService
             return $"{request.Scheme}://{request.Host}";
         }
 
-        public string GetClientUrl()
+        public string GetHeaderValue(string header)
         {
             var request = _contextAccessor.HttpContext.Request;
-            var clientUrl = request.Headers["Origin"];
-            return clientUrl == default(StringValues) ? string.Empty : clientUrl;
+            var headerValue = request.Headers[header];
+            return headerValue == default(StringValues) ? string.Empty : headerValue;
         }
 
         public string SerializeToBae64<T>(T obj)

@@ -31,14 +31,11 @@ namespace DogsBarberShop.Services.JwtService
         {
             var secretBytes = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
 
-            var firstName = claims.First(c => c.Type == ClaimTypes.Name).Value;
-            var allClaims = new List<Claim>();
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(getAllClaims(user, claims)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretBytes), SecurityAlgorithms.HmacSha512),
-                Audience = _utilsService.GetClientUrl(),
+                Audience = _utilsService.GetHeaderValue("Origin"),
                 Issuer = _utilsService.GetHostUrl(),
                 Expires = DateTime.Now.AddDays(10),
             };
