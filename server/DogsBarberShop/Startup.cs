@@ -30,11 +30,13 @@ namespace DogsBarberShop
             services.ConfigureJwtAuthentication();
             services.ConfigureCors();
             services.ConfigureMvc();
+            services.ConfigureAutoMapper();
 
-            services.AddScoped<IAuthService<User>, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService<User>, JwtService>();
             services.AddScoped<IUtilsService, UtilsService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<AuthActionFilter>();
 
             services.AddHttpContextAccessor(); // for accessing HttpContext in custom components
         }

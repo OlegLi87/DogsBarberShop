@@ -1,6 +1,4 @@
 using System;
-using DogsbarberShop.Entities.InfrastructureModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace DogsbarberShop.Controllers.Filters

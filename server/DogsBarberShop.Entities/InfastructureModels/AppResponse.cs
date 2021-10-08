@@ -2,15 +2,15 @@ using System.Collections.Generic;
 
 namespace DogsbarberShop.Entities.InfrastructureModels
 {
-    public class AppResponse<T>
+    public class AppResponse
     {
         public ushort StatusCode { get; set; }
         public bool IsSuccess => StatusCode < 400;
-        public ResponsePayload<T> Payload { get; set; }
-        public struct ResponsePayload<U>
+        public ResponsePayload Payload { get; set; }
+        public struct ResponsePayload
         {
             public IEnumerable<string> Errors { get; set; }
-            public U ResponseObject { get; set; }
+            public object ResponseObject { get; set; }
         }
     }
 }

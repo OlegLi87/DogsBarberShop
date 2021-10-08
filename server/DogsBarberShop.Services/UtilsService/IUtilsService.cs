@@ -5,8 +5,8 @@ namespace DogsBarberShop.Services.UtilsService
 {
     public interface IUtilsService
     {
-        AppResponse<T> CreateResponseWithErrors<T>(IEnumerable<string> errors, ushort statusCode = 400);
-        AppResponse<T> CreateResponseWithPayload<T>(T payload, ushort statusCode = 200);
+        AppResponse CreateResponseWithErrors(IEnumerable<string> errors, ushort statusCode = 400);
+        AppResponse CreateResponseWithPayload(object payload, ushort statusCode = 200);
         string GetHostUrl();
         string GetHeaderValue(string header);
         string SerializeToBae64<T>(T obj);

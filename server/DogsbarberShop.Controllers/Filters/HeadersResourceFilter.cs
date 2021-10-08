@@ -1,4 +1,5 @@
 using System;
+using DogsbarberShop.Entities.InfrastructureModels;
 using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,7 +23,14 @@ namespace DogsbarberShop.Controllers.Filters
             {
                 var originValue = _utilsService.GetHeaderValue("Origin");
                 if (string.IsNullOrEmpty(originValue))
-                    context.Result = new ObjectResult(_utilsService.CreateResponseWithErrors<string>(new[] { "Origin header is missing." }));
+                    context.Result = new ObjectResult(new AppResponse
+                    {
+                        StatusCode = 400,
+                        Payload = new AppResponse.ResponsePayload
+                        {
+                            Errors = new[] { "Origin header is missing." }
+                        }
+                    });
             }
         }
 

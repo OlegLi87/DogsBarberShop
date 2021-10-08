@@ -1,10 +1,13 @@
 using System;
+using System.Reflection;
 using System.Text;
 using DogsbarberShop.Controllers.Filters;
+using DogsBarberShop.Entities;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DogsBarberShop.Infastructure.ExtensionMethods
 {
-    public static partial class ServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection ConfigureDbContext(this IServiceCollection services)
         {
@@ -101,6 +104,12 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
             });
 
             return services;
+        }
+
+        public static IServiceCollection ConfigureAutoMapper(this IServiceCollection services)
+        {
+            var mappingProfileAssembly = Assembly.GetAssembly(typeof(MappingProfile));
+            return services.AddAutoMapper(mappingProfileAssembly);
         }
 
         public static T GetService<T>(this IServiceCollection serviceCollection)

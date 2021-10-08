@@ -21,24 +21,24 @@ namespace DogsBarberShop.Services.UtilsService
             _contextAccessor = contextAccessor;
         }
 
-        public AppResponse<T> CreateResponseWithErrors<T>(IEnumerable<string> errors, ushort statusCode = 400)
+        public AppResponse CreateResponseWithErrors(IEnumerable<string> errors, ushort statusCode = 400)
         {
-            return new AppResponse<T>
+            return new AppResponse
             {
                 StatusCode = statusCode,
-                Payload = new AppResponse<T>.ResponsePayload<T>
+                Payload = new AppResponse.ResponsePayload
                 {
                     Errors = errors
                 }
             };
         }
 
-        public AppResponse<T> CreateResponseWithPayload<T>(T payload, ushort statusCode = 200)
+        public AppResponse CreateResponseWithPayload(object payload, ushort statusCode = 200)
         {
-            return new AppResponse<T>
+            return new AppResponse
             {
                 StatusCode = statusCode,
-                Payload = new AppResponse<T>.ResponsePayload<T>
+                Payload = new AppResponse.ResponsePayload
                 {
                     ResponseObject = payload
                 }
