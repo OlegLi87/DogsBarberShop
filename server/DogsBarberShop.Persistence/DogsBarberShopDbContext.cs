@@ -17,21 +17,6 @@ namespace DogsBarberShop.Persistence
         public DogsBarberShopDbContext(DbContextOptions<DogsBarberShopDbContext> opts) : base(opts)
         { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
-            builder.Entity<Pet>()
-                   .HasOne<User>(p => p.User)
-                   .WithMany(u => u.Pets)
-                   .HasForeignKey(p => p.UserId);
-
-            builder.Entity<Pet>()
-                   .HasOne<Order>(p => p.Order)
-                   .WithOne(o => o.Pet)
-                   .HasForeignKey<Order>(o => o.PetId);
-        }
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             var trackables = ChangeTracker.Entries<IDateTrackableEntity>()
