@@ -13,6 +13,7 @@ using DogsBarberShop.Services.EmailService;
 using DogsBarberShop.Services.JwtService;
 using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
@@ -41,7 +42,7 @@ namespace DogsBarberShop.Services.AuthService
 
         public async Task SignUp(SignUpCredentials credentials)
         {
-            var newUser = new User { UserName = credentials.UserName, Email = credentials.Email };
+            var newUser = _mapper.Map<User>(credentials);
             var signUpResult = await _userManager.CreateAsync(newUser, credentials.Password);
             if (!signUpResult.Succeeded)
                 throw _mapper.Map<AuthenticationException>(signUpResult);
