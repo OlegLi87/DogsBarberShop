@@ -6,6 +6,7 @@ using DogsBarberShop.Persistence;
 using DogsBarberShop.Services.AuthService;
 using DogsBarberShop.Services.EmailService;
 using DogsBarberShop.Services.JwtService;
+using DogsBarberShop.Services.UnitOfWork;
 using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace DogsBarberShop
             services.AddScoped<IJwtService<User>, JwtService>();
             services.AddScoped<IUtilsService, UtilsService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<AuthActionFilter>();
 
             services.AddHttpContextAccessor(); // for accessing HttpContext in custom components

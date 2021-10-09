@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DogsBarberShop.Entities\DogsBarberShop.Entities.csproj" />
+    <ProjectReference Include="..\DogsBarberShop.Persistence\DogsBarberShop.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
