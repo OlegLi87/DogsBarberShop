@@ -15,7 +15,7 @@ namespace DogsBarberShop.Entities.DomainModels
         public byte Age { get; set; }
 
         [Column(TypeName = "varchar(max)")]
-        public string ImageUrl { get; set; }
+        public string ImagePath { get; set; }
 
         [Required]
         public string UserId { get; set; }

@@ -4,14 +4,16 @@ using DogsBarberShop.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DogsBarberShop.Persistence.Migrations
 {
     [DbContext(typeof(DogsBarberShopDbContext))]
-    partial class DogsBarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211009134848_Pet.ImagePath")]
+    partial class PetImagePath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

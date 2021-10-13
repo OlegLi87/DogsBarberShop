@@ -86,6 +86,7 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
                 {
                     builder.AllowAnyMethod();
                     builder.AllowAnyHeader();
+                    // builder.AllowAnyOrigin();
 
                     foreach (var origin in appSettings.Cors.AllowedOrigins)
                         builder.WithOrigins(origin);
@@ -113,11 +114,9 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
 
         public static T GetService<T>(this IServiceCollection serviceCollection)
         {
-            using (var serviceProvider = serviceCollection.BuildServiceProvider())
-            {
-                var service = serviceProvider.GetService<T>();
-                return service ?? default(T);
-            }
+            using var serviceProvider = serviceCollection.BuildServiceProvider();
+            var service = serviceProvider.GetService<T>();
+            return service ?? default(T);
         }
     }
 }

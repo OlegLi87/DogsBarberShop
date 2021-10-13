@@ -9,6 +9,7 @@ namespace DogsBarberShop.Entities.InfastructureModels
         public CorsSettings Cors { get; set; }
         public IEnumerable<string> ApplicationUrls { get; set; }
         public SmtpSettings Smtp { get; set; }
+        public UploadImageSettings UploadImage { get; set; }
         public bool Migrate { get; set; }
         public string ConfirmEmailPath { get; set; }
         public string ResetPasswordPath { get; set; }
@@ -41,6 +42,12 @@ namespace DogsBarberShop.Entities.InfastructureModels
             public int SmtpPort { get; set; }
             public string SmtpUser { get; set; }  // from user-secrets
             public string SmtpPassword { get; set; }  // from user-secrets
+        }
+
+        public struct UploadImageSettings
+        {
+            public long LimitSize { get; set; }
+            public IEnumerable<string> AllowedFormats { get; set; }
         }
     }
 }

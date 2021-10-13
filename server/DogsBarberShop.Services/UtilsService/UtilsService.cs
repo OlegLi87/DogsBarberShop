@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using DogsbarberShop.Entities.InfrastructureModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using Microsoft.AspNetCore.Http;
@@ -70,6 +72,12 @@ namespace DogsBarberShop.Services.UtilsService
             var jsonBytes = Convert.FromBase64String(base64String);
             var json = Encoding.ASCII.GetString(jsonBytes);
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public async Task SaveFileAsync(string path, IFormFile file)
+        {
+            using var fileStream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(fileStream);
         }
     }
 }

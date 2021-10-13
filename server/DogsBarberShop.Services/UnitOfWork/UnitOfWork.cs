@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DogsBarberShop.Entities.Repositories;
 using DogsBarberShop.Persistence;
 using DogsBarberShop.Persistence.Repositories;
@@ -19,7 +20,7 @@ namespace DogsBarberShop.Services.UnitOfWork
             Pets = new PetsRepository(context);
         }
 
-        public async void Dispose()
+        public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }
