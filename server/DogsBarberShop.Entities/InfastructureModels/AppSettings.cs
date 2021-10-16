@@ -48,6 +48,7 @@ namespace DogsBarberShop.Entities.InfastructureModels
         {
             public long LimitSize { get; set; }
             public IEnumerable<string> AllowedFormats { get; set; }
+            public string ImagesPath { get; set; }
         }
     }
 }

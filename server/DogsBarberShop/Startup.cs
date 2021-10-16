@@ -1,3 +1,4 @@
+using System.IO;
 using DogsbarberShop.Controllers.Filters;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -39,6 +41,7 @@ namespace DogsBarberShop
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<AuthActionFilter>();
+            services.AddScoped<UplaodImageSizeLimitResourceFilter>();
 
             services.AddHttpContextAccessor(); // for accessing HttpContext in custom components
         }
@@ -48,6 +51,14 @@ namespace DogsBarberShop
             var appSettings = settingsOpts.Value;
 
             app.UseCors(appSettings.Cors.PolicyName);
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), appSettings.UploadImage.ImagesPath)),
+
+                RequestPath = '/' + appSettings.UploadImage.ImagesPath
+            });
 
             app.UseRouting();
             app.UseAuthentication();
