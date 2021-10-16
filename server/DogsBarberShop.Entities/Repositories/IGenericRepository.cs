@@ -8,10 +8,10 @@ namespace DogsBarberShop.Entities.Repositories
     public interface IGenericRepository<T> where T : class
     {
         Task<T> GetById(Guid id);
-        Task<IEnumerable<T>> Get(Expression<Func<T, bool>> predicate = null);
-        void Add(params T[] entites);
-        void Delete(params T[] entities);
+        Task<List<T>> Get(Expression<Func<T, bool>> predicate = null);
+        Task Add(params T[] entites);
+        Task Delete(params T[] ids);
         Task PatchUpdate(Guid id, Dictionary<string, dynamic> newValues);
-        void PutUpdate(T newEntityData);
+        Task PutUpdate(T newEntityData);
     }
 }

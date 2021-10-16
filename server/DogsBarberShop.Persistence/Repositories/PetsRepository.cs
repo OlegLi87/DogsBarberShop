@@ -1,3 +1,6 @@
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Repositories;
 using Microsoft.EntityFrameworkCore;

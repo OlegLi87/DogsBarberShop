@@ -1,13 +1,15 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using DogsbarberShop.Controllers.Filters;
 using DogsbarberShop.Entities.InfrastructureModels;
+using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Dtos;
+using DogsBarberShop.Entities.Dtos.PetDtos;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Services.UnitOfWork;
 using DogsBarberShop.Services.UtilsService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -15,6 +17,7 @@ namespace DogsbarberShop.Controllers.Controllers
 {
     [ApiController]
     [Route("api/{controller}")]
+    [Authorize]
     public sealed class PetsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -32,21 +35,56 @@ namespace DogsbarberShop.Controllers.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetPet([FromRoute] Guid id)
+        [ProvideUserIdActionFilter(ItemValueName = "userId", ClaimTypeName = "id")]
+        public async Task<AppResponse> GetAllUserPets()
         {
-            var pet = await _unitOfWork.Pets.GetById(id);
-            if (pet is not null)
-                return new ObjectResult(new AppResponse
-                {
-                    StatusCode = 200,
-                    Payload = new AppResponse.ResponsePayload
-                    {
-                        ResponseObject = pet
-                    }
-                });
+            var userId = HttpContext.Items["userId"] as string;
+            var usersPets = await _unitOfWork.Pets.Get(p => p.UserId == userId);
 
-            return NotFound();
+            return new AppResponse
+            {
+                StatusCode = 200,
+                Payload = new AppResponse.ResponsePayload
+                {
+                    ResponseObject = usersPets
+                }
+            };
+        }
+
+        [HttpPost]
+        [ProvideUserIdActionFilter(ItemValueName = "userId", ClaimTypeName = "id")]
+        public async Task<AppResponse> AddPet(PetInputDto petInputDto)
+        {
+            var userId = HttpContext.Items["userId"] as string;
+
+            var newPet = _mapper.Map<Pet>(petInputDto);
+            newPet.UserId = userId;
+
+            await _unitOfWork.Pets.Add(newPet);
+
+            return new AppResponse
+            {
+                StatusCode = 201,
+                Payload = new AppResponse.ResponsePayload
+                {
+                    ResponseObject = _mapper.Map<PetOutputDto>(newPet)
+                }
+            };
+        }
+
+        [HttpDelete]
+        [Route("{petId}")]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId", "id", "petToDelete" })]
+        public async Task<AppResponse> DeletePet()
+        {
+            var petToDelete = HttpContext.Items["petToDelete"] as Pet;
+            await _unitOfWork.Pets.Delete(petToDelete);
+
+            return new AppResponse
+            {
+                StatusCode = 204,
+                Payload = new AppResponse.ResponsePayload()
+            };
         }
 
         [HttpPost]

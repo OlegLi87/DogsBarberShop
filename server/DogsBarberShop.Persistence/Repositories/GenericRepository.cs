@@ -24,7 +24,7 @@ namespace DogsBarberShop.Persistence.Repositories
             return await targetData.FindAsync(id);
         }
 
-        public async virtual Task<IEnumerable<T>> Get(Expression<Func<T, bool>> predicate = null)
+        public async virtual Task<List<T>> Get(Expression<Func<T, bool>> predicate = null)
         {
             if (predicate is null)
                 predicate = entity => true;
@@ -32,14 +32,16 @@ namespace DogsBarberShop.Persistence.Repositories
             return await targetData.Where(predicate).ToListAsync();
         }
 
-        public virtual void Add(params T[] entities)
+        public async virtual Task Add(params T[] entities)
         {
             targetData.AddRange(entities);
+            await context.SaveChangesAsync();
         }
 
-        public virtual void Delete(params T[] entities)
+        public async virtual Task Delete(params T[] entities)
         {
             targetData.RemoveRange(entities);
+            await context.SaveChangesAsync();
         }
 
         public virtual async Task PatchUpdate(Guid id, Dictionary<string, dynamic> newValues)
@@ -58,9 +60,10 @@ namespace DogsBarberShop.Persistence.Repositories
             }
         }
 
-        public virtual void PutUpdate(T newEntityData)
+        public async virtual Task PutUpdate(T newEntityData)
         {
             targetData.Update(newEntityData);
+            await context.SaveChangesAsync();
         }
     }
 }
