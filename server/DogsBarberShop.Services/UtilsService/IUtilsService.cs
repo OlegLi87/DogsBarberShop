@@ -14,5 +14,6 @@ namespace DogsBarberShop.Services.UtilsService
         string SerializeToBae64<T>(T obj);
         T DeserializeFromBase64<T>(string base64String);
         Task SaveFileAsync(string path, IFormFile file);
+        Dictionary<string, dynamic> MapPropertiesToDictionary(object obj);
     }
 }

@@ -18,10 +18,11 @@ namespace DogsbarberShop.Controllers.Controllers
     [ApiController]
     [Route("api/{controller}")]
     [Authorize]
+    [PetsOrdersExceptionFilter]
     public sealed class PetsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUtilsService _utilsServie;
+        private readonly IUtilsService _utilsService;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
 
@@ -29,7 +30,7 @@ namespace DogsbarberShop.Controllers.Controllers
                                IOptions<AppSettings> opts)
         {
             _unitOfWork = unitOfWork;
-            _utilsServie = utilsService;
+            _utilsService = utilsService;
             _mapper = mapper;
             _appSettings = opts.Value;
         }
@@ -87,6 +88,24 @@ namespace DogsbarberShop.Controllers.Controllers
             };
         }
 
+        [HttpPatch]
+        [Route("{petId}")]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId", "id", "petToUpdate" })]
+        public async Task<AppResponse> UpdatePet(PetUpdateDto petUpdateDto)
+        {
+            var petToUpdate = HttpContext.Items["petToUpdate"] as Pet;
+            await _unitOfWork.Pets.PatchUpdate(petToUpdate, _utilsService.MapPropertiesToDictionary(petUpdateDto));
+
+            return new AppResponse
+            {
+                StatusCode = 200,
+                Payload = new AppResponse.ResponsePayload
+                {
+                    ResponseObject = _mapper.Map<PetOutputDto>(petToUpdate)
+                }
+            };
+        }
+
         [HttpPost]
         [Route("uploadImage")]
         [ServiceFilter(typeof(UplaodImageSizeLimitResourceFilter))]
@@ -98,7 +117,7 @@ namespace DogsbarberShop.Controllers.Controllers
             var relativePath = Path.Combine(_appSettings.UploadImage.ImagesPath, "Pets");
             var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
 
-            await _utilsServie.SaveFileAsync(Path.Combine(absolutePath, fileName), image);
+            await _utilsService.SaveFileAsync(Path.Combine(absolutePath, fileName), image);
 
             return new AppResponse
             {

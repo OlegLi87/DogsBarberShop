@@ -11,7 +11,7 @@ namespace DogsBarberShop.Entities.Repositories
         Task<List<T>> Get(Expression<Func<T, bool>> predicate = null);
         Task Add(params T[] entites);
         Task Delete(params T[] ids);
-        Task PatchUpdate(Guid id, Dictionary<string, dynamic> newValues);
+        Task PatchUpdate(T id, Dictionary<string, dynamic> newValues);
         Task PutUpdate(T newEntityData);
     }
 }

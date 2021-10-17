@@ -44,20 +44,19 @@ namespace DogsBarberShop.Persistence.Repositories
             await context.SaveChangesAsync();
         }
 
-        public virtual async Task PatchUpdate(Guid id, Dictionary<string, dynamic> newValues)
+        public virtual async Task PatchUpdate(T entity, Dictionary<string, dynamic> newValues)
         {
-            var entityInDb = await targetData.FindAsync(id);
-            if (entityInDb is null) return;
-
-            var entityType = entityInDb.GetType();
+            var entityType = entity.GetType();
             var props = entityType.GetProperties();
 
             foreach (var keyValue in newValues)
             {
                 var prop = props.FirstOrDefault(p => p.Name != "Id" && p.Name == keyValue.Key);
                 if (prop is not null)
-                    prop.SetValue(entityInDb, keyValue.Value);
+                    prop.SetValue(entity, keyValue.Value);
             }
+
+            await context.SaveChangesAsync();
         }
 
         public async virtual Task PutUpdate(T newEntityData)

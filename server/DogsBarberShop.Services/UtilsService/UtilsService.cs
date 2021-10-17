@@ -79,5 +79,20 @@ namespace DogsBarberShop.Services.UtilsService
             using var fileStream = new FileStream(path, FileMode.Create);
             await file.CopyToAsync(fileStream);
         }
+
+        public Dictionary<string, dynamic> MapPropertiesToDictionary(object obj)
+        {
+            var props = obj.GetType().GetProperties();
+            var propsDictionary = new Dictionary<string, dynamic>();
+
+            foreach (var prop in props)
+            {
+                var value = prop.GetValue(obj);
+                if (value is not null)
+                    propsDictionary[prop.Name] = value;
+            }
+
+            return propsDictionary;
+        }
     }
 }
