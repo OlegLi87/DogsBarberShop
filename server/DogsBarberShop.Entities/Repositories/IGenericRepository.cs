@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DogsBarberShop.Entities.DomainModels;
 
 namespace DogsBarberShop.Entities.Repositories
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T> GetById(Guid id);
         Task<List<T>> Get(Expression<Func<T, bool>> predicate = null);

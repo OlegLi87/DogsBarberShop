@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -93,6 +94,25 @@ namespace DogsBarberShop.Services.UtilsService
             }
 
             return propsDictionary;
+        }
+
+        public DateTimeOffset CreateParsedDate(DateTimeOffset targetDate, string dateToParse, string format)
+        {
+            var parsedDate = DateTimeOffset.ParseExact(dateToParse, format, null, DateTimeStyles.None);
+            int yearsOffset = 0, monthsOffset = 0, daysOffset = 0, hoursOffset = 0, minutesOffset = 0;
+
+            if (format == "HH:mm")
+            {
+                yearsOffset = targetDate.Year - parsedDate.Year;
+                monthsOffset = targetDate.Month - parsedDate.Month;
+                daysOffset = targetDate.Day - parsedDate.Day;
+            }
+
+            return parsedDate.AddYears(yearsOffset)
+                             .AddMonths(monthsOffset)
+                             .AddDays(daysOffset)
+                             .AddHours(hoursOffset)
+                             .AddMinutes(minutesOffset);
         }
     }
 }

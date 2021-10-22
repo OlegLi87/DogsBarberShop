@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DogsbarberShop.Controllers.Filters;
@@ -36,7 +37,7 @@ namespace DogsbarberShop.Controllers.Controllers
         }
 
         [HttpGet]
-        [ProvideUserIdActionFilter(ItemValueName = "userId", ClaimTypeName = "id")]
+        [ProvideUserIdActionFilter]
         public async Task<AppResponse> GetAllUserPets()
         {
             var userId = HttpContext.Items["userId"] as string;
@@ -47,18 +48,18 @@ namespace DogsbarberShop.Controllers.Controllers
                 StatusCode = 200,
                 Payload = new AppResponse.ResponsePayload
                 {
-                    ResponseObject = usersPets
+                    ResponseObject = usersPets.Select(_mapper.Map<PetOutputDto>)
                 }
             };
         }
 
         [HttpPost]
-        [ProvideUserIdActionFilter(ItemValueName = "userId", ClaimTypeName = "id")]
+        [ProvideUserIdActionFilter]
         public async Task<AppResponse> AddPet(PetInputDto petInputDto)
         {
-            var userId = HttpContext.Items["userId"] as string;
-
             var newPet = _mapper.Map<Pet>(petInputDto);
+
+            var userId = HttpContext.Items["userId"] as string;
             newPet.UserId = userId;
 
             await _unitOfWork.Pets.Add(newPet);
@@ -75,10 +76,10 @@ namespace DogsbarberShop.Controllers.Controllers
 
         [HttpDelete]
         [Route("{petId}")]
-        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId", "id", "petToDelete" })]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId" })]
         public async Task<AppResponse> DeletePet()
         {
-            var petToDelete = HttpContext.Items["petToDelete"] as Pet;
+            var petToDelete = HttpContext.Items["pet"] as Pet;
             await _unitOfWork.Pets.Delete(petToDelete);
 
             return new AppResponse
@@ -90,10 +91,10 @@ namespace DogsbarberShop.Controllers.Controllers
 
         [HttpPatch]
         [Route("{petId}")]
-        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId", "id", "petToUpdate" })]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId" })]
         public async Task<AppResponse> UpdatePet(PetUpdateDto petUpdateDto)
         {
-            var petToUpdate = HttpContext.Items["petToUpdate"] as Pet;
+            var petToUpdate = HttpContext.Items["pet"] as Pet;
             await _unitOfWork.Pets.PatchUpdate(petToUpdate, _utilsService.MapPropertiesToDictionary(petUpdateDto));
 
             return new AppResponse

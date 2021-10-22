@@ -1,14 +1,10 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DogsBarberShop.Entities.DomainModels.Interfaces;
 
 namespace DogsBarberShop.Entities.DomainModels
 {
-    public class Pet : IEntity
+    public class Pet : BaseEntity
     {
-        public Guid Id { get; set; }
-
         [Required]
         [MaxLength(40)]
         public string NickName { get; set; }
@@ -16,8 +12,6 @@ namespace DogsBarberShop.Entities.DomainModels
 
         [Column(TypeName = "varchar(max)")]
         public string ImagePath { get; set; }
-
-        [Required]
         public string UserId { get; set; }
         public User User { get; set; }
         public Order Order { get; set; }

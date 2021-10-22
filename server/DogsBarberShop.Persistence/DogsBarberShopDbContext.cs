@@ -6,6 +6,7 @@ using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.DomainModels.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DogsBarberShop.Persistence
 {
@@ -16,6 +17,36 @@ namespace DogsBarberShop.Persistence
 
         public DogsBarberShopDbContext(DbContextOptions<DogsBarberShopDbContext> opts) : base(opts)
         { }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Pet>()
+                   .HasKey(p => new { p.Id, p.UserId });
+
+            builder.Entity<Pet>()
+                   .HasOne(p => p.User)
+                   .WithMany(u => u.Pets)
+                   .HasForeignKey(p => p.UserId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Order>()
+                   .HasOne(o => o.Pet)
+                   .WithOne(p => p.Order)
+                   .HasPrincipalKey<Pet>(p => new { p.Id, p.UserId })
+                   .HasForeignKey<Order>(o => new { o.PetId, o.UserId })
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Order>()
+                   .HasOne(o => o.User)
+                   .WithMany(u => u.Orders)
+                   .HasForeignKey(o => o.UserId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
+        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {

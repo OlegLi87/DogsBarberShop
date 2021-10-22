@@ -4,14 +4,16 @@ using DogsBarberShop.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DogsBarberShop.Persistence.Migrations
 {
     [DbContext(typeof(DogsBarberShopDbContext))]
-    partial class DogsBarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211022131715_Order.User User.Orders")]
+    partial class OrderUserUserOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,15 +39,14 @@ namespace DogsBarberShop.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("PetId", "UserId")
+                    b.HasIndex("PetId")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -53,10 +54,8 @@ namespace DogsBarberShop.Persistence.Migrations
             modelBuilder.Entity("DogsBarberShop.Entities.DomainModels.Pet", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte>("Age")
                         .HasColumnType("tinyint");
@@ -69,7 +68,11 @@ namespace DogsBarberShop.Persistence.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.HasKey("Id", "UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -274,17 +277,15 @@ namespace DogsBarberShop.Persistence.Migrations
 
             modelBuilder.Entity("DogsBarberShop.Entities.DomainModels.Order", b =>
                 {
-                    b.HasOne("DogsBarberShop.Entities.DomainModels.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
+                    b.HasOne("DogsBarberShop.Entities.DomainModels.Pet", "Pet")
+                        .WithOne("Order")
+                        .HasForeignKey("DogsBarberShop.Entities.DomainModels.Order", "PetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DogsBarberShop.Entities.DomainModels.Pet", "Pet")
-                        .WithOne("Order")
-                        .HasForeignKey("DogsBarberShop.Entities.DomainModels.Order", "PetId", "UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.HasOne("DogsBarberShop.Entities.DomainModels.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Pet");
 

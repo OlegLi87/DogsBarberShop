@@ -1,7 +1,9 @@
+using System.Collections.Concurrent;
 using System.Linq;
 using AutoMapper;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
 using DogsBarberShop.Entities.DomainModels;
+using DogsBarberShop.Entities.Dtos.OrderDtos;
 using DogsBarberShop.Entities.Dtos.PetDtos;
 using DogsBarberShop.Entities.InfastructureModels;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +18,9 @@ namespace DogsBarberShop.Entities
 
             CreateMap<PetInputDto, Pet>();
             CreateMap<Pet, PetOutputDto>();
+
+            CreateMap<OrderInputDto, Order>();
+            CreateMap<Order, OrderOutputDto>();
 
             CreateMap<IdentityResult, AuthenticationException>()
                      .ForMember(dest => dest.ExceptionMessages,

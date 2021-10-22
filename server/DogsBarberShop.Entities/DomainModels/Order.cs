@@ -5,18 +5,18 @@ using DogsBarberShop.Entities.DomainModels.Interfaces;
 
 namespace DogsBarberShop.Entities.DomainModels
 {
-    public class Order : IEntity, IDateTrackableEntity
+    public class Order : BaseEntity, IDateTrackableEntity
     {
-        public Guid Id { get; set; }
+        [Required]
+        [Column(TypeName = "datetimeoffset")]
+        public DateTimeOffset? CreationDate { get; set; }
 
         [Required]
-        [Column(TypeName = "smalldatetime")]
-        public DateTime? CreationDate { get; set; }
-
-        [Required]
-        [Column(TypeName = "smalldatetime")]
-        public DateTime? ArrivalDate { get; set; }
+        [Column(TypeName = "datetimeoffset")]
+        public DateTimeOffset? ArrivalDate { get; set; }
         public Guid PetId { get; set; }
+        public string UserId { get; set; }
         public Pet Pet { get; set; }
+        public User User { get; set; }
     }
 }

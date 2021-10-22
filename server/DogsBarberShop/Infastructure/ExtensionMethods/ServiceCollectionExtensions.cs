@@ -25,8 +25,8 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
             return services.AddDbContext<DogsBarberShopDbContext>(opts =>
             {
                 // By default migrations will be created in the folder containing DbContext class,so the seconcd argument can be omitted.
-                opts.UseSqlServer(connectionString, x => x.MigrationsAssembly("DogsBarberShop.Persistence"));
-                opts.EnableSensitiveDataLogging();
+                opts.UseSqlServer(connectionString, x => x.MigrationsAssembly("DogsBarberShop.Persistence"))
+                    .EnableSensitiveDataLogging();
             });
         }
 

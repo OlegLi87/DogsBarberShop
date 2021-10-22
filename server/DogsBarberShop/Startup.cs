@@ -27,6 +27,7 @@ namespace DogsBarberShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(_config);
+            services.Configure<BussinessData>(_config.GetSection("BussinessData"));
 
             services.ConfigureDbContext();
             services.ConfigureIdentity();

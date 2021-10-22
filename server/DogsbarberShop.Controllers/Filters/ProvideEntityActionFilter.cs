@@ -12,28 +12,23 @@ namespace DogsbarberShop.Controllers.Filters
     {
         private readonly IUnitOfWork _unitOfWork;
         private string _routeValueName;
-        private string _claimTypeName;
-        private string _itemValueName;
 
-        public ProvideEntityActionFilter(IUnitOfWork unitOfWork, string routeValueName,
-                                          string claimTypeName, string itemValueName)
+        public ProvideEntityActionFilter(IUnitOfWork unitOfWork, string routeValueName)
         {
             _unitOfWork = unitOfWork;
             _routeValueName = routeValueName;
-            _claimTypeName = claimTypeName;
-            _itemValueName = itemValueName;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var controllerName = context.RouteData.Values["controller"].ToString().ToLower();
             var targetId = new Guid(context.RouteData.Values[_routeValueName].ToString());
-            var userId = context.HttpContext.User.Claims.First(c => c.Type == _claimTypeName).Value.ToString();
+            var userId = context.HttpContext.User.Claims.First(c => c.Type == "id").Value.ToString();
 
             if (controllerName == "pets")
             {
-                var pets = await _unitOfWork.Pets.Get(p => p.Id == targetId && p.UserId == userId);
-                if (!pets.Any())
+                var petsList = await _unitOfWork.Pets.Get(p => p.Id == targetId && p.UserId == userId);
+                if (petsList.Count == 0)
                 {
                     context.Result = new ObjectResult(new AppResponse
                     {
@@ -46,10 +41,13 @@ namespace DogsbarberShop.Controllers.Filters
                     return;
                 }
 
-                context.HttpContext.Items[_itemValueName] = pets[0];
+                context.HttpContext.Items["pet"] = petsList[0];
             }
 
-            if (controllerName == "orders") { }
+            if (controllerName == "orders")
+            {
+
+            }
 
             await next();
         }

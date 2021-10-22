@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DogsbarberShop.Entities.InfrastructureModels;
@@ -15,5 +16,6 @@ namespace DogsBarberShop.Services.UtilsService
         T DeserializeFromBase64<T>(string base64String);
         Task SaveFileAsync(string path, IFormFile file);
         Dictionary<string, dynamic> MapPropertiesToDictionary(object obj);
+        DateTimeOffset CreateParsedDate(DateTimeOffset targetDate, string dataToParse, string format);
     }
 }

@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace DogsBarberShop.Persistence.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        protected DbContext context;
-        protected DbSet<T> targetData;
+        protected DbContext Context;
+        protected DbSet<T> TargetData;
 
         public GenericRepository(DbContext dbContext)
         {
-            context = dbContext;
-            targetData = context.Set<T>();
+            Context = dbContext;
+            TargetData = Context.Set<T>();
         }
 
         public async virtual Task<T> GetById(Guid id)
         {
-            return await targetData.FindAsync(id);
+            return await TargetData.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async virtual Task<List<T>> Get(Expression<Func<T, bool>> predicate = null)
@@ -29,19 +30,19 @@ namespace DogsBarberShop.Persistence.Repositories
             if (predicate is null)
                 predicate = entity => true;
 
-            return await targetData.Where(predicate).ToListAsync();
+            return await TargetData.Where(predicate).AsNoTracking().ToListAsync();
         }
 
         public async virtual Task Add(params T[] entities)
         {
-            targetData.AddRange(entities);
-            await context.SaveChangesAsync();
+            TargetData.AddRange(entities);
+            await Context.SaveChangesAsync();
         }
 
         public async virtual Task Delete(params T[] entities)
         {
-            targetData.RemoveRange(entities);
-            await context.SaveChangesAsync();
+            TargetData.RemoveRange(entities);
+            await Context.SaveChangesAsync();
         }
 
         public virtual async Task PatchUpdate(T entity, Dictionary<string, dynamic> newValues)
@@ -56,13 +57,13 @@ namespace DogsBarberShop.Persistence.Repositories
                     prop.SetValue(entity, keyValue.Value);
             }
 
-            await context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
 
         public async virtual Task PutUpdate(T newEntityData)
         {
-            targetData.Update(newEntityData);
-            await context.SaveChangesAsync();
+            TargetData.Update(newEntityData);
+            await Context.SaveChangesAsync();
         }
     }
 }

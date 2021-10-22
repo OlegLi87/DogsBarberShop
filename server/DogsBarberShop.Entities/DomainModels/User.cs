@@ -6,5 +6,6 @@ namespace DogsBarberShop.Entities.DomainModels
     public class User : IdentityUser
     {
         public IEnumerable<Pet> Pets { get; set; }
+        public IEnumerable<Order> Orders { get; set; }
     }
 }
