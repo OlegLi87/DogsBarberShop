@@ -1,14 +1,7 @@
 using System.IO;
-using DogsbarberShop.Controllers.Filters;
-using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Infastructure.ExtensionMethods;
 using DogsBarberShop.Persistence;
-using DogsBarberShop.Services.AuthService;
-using DogsBarberShop.Services.EmailService;
-using DogsBarberShop.Services.JwtService;
-using DogsBarberShop.Services.UnitOfWork;
-using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -35,14 +28,7 @@ namespace DogsBarberShop
             services.ConfigureCors();
             services.ConfigureMvc();
             services.ConfigureAutoMapper();
-
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IJwtService<User>, JwtService>();
-            services.AddScoped<IUtilsService, UtilsService>();
-            services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<AuthActionFilter>();
-            services.AddScoped<UplaodImageSizeLimitResourceFilter>();
+            services.ConfigureScopedServices();
 
             services.AddHttpContextAccessor(); // for accessing HttpContext in custom components
         }

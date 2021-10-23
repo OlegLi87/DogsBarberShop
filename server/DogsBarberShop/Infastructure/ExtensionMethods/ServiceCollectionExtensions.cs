@@ -2,10 +2,16 @@ using System;
 using System.Reflection;
 using System.Text;
 using DogsbarberShop.Controllers.Filters;
+using DogsbarberShop.Controllers.Filters.NewOrderValidatorFilters;
 using DogsBarberShop.Entities;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Persistence;
+using DogsBarberShop.Services.AuthService;
+using DogsBarberShop.Services.EmailService;
+using DogsBarberShop.Services.JwtService;
+using DogsBarberShop.Services.UnitOfWork;
+using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -110,6 +116,23 @@ namespace DogsBarberShop.Infastructure.ExtensionMethods
         {
             var mappingProfileAssembly = Assembly.GetAssembly(typeof(MappingProfile));
             return services.AddAutoMapper(mappingProfileAssembly);
+        }
+
+        public static IServiceCollection ConfigureScopedServices(this IServiceCollection services)
+        {
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IJwtService<User>, JwtService>();
+            services.AddScoped<IUtilsService, UtilsService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<AuthActionFilter>();
+            services.AddScoped<UplaodImageSizeLimitResourceFilter>();
+            services.AddScoped<NoRegisteredOrderForAPetActionFilter>();
+            services.AddScoped<ArrivalDateTimeOnWorkingTimeActionFilter>();
+            services.AddScoped<RoundArrivalTimeActionFilter>();
+            services.AddScoped<NoRegisteredOrderOnArrivalDateTime>();
+
+            return services;
         }
 
         public static T GetService<T>(this IServiceCollection serviceCollection)

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DogsbarberShop.Controllers.Filters;
+using DogsbarberShop.Controllers.Filters.NewOrderValidatorFilters;
 using DogsbarberShop.Entities.InfrastructureModels;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Dtos.OrderDtos;
@@ -27,9 +29,15 @@ namespace DogsbarberShop.Controllers.Controllers
         }
 
         [HttpGet]
-        public async Task<AppResponse> GetAllOrders()
+        [ProvideUserIdActionFilter]
+        public async Task<AppResponse> GetAllOrders([FromQuery] string target)
         {
-            var orders = await _unitOfWork.Orders.Get();
+            IEnumerable<Order> orders;
+
+            if (target == "user")
+                orders = await _unitOfWork.Orders.Get(o => o.UserId == HttpContext.Items["userId"] as string);
+            else
+                orders = await _unitOfWork.Orders.Get();
 
             return new AppResponse
             {
@@ -42,18 +50,26 @@ namespace DogsbarberShop.Controllers.Controllers
         }
 
         [HttpPost]
-        [TypeFilter(typeof(NewOrderValidatorActionFilter), Arguments = new[] { "orderInputDto" })]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { typeof(Pet) })]
+        [ServiceFilter(typeof(NoRegisteredOrderForAPetActionFilter))]
+        [ServiceFilter(typeof(ArrivalDateTimeOnWorkingTimeActionFilter))]
+        [ServiceFilter(typeof(RoundArrivalTimeActionFilter))]
+        [ServiceFilter(typeof(NoRegisteredOrderOnArrivalDateTime))]
+        [ProvideUserIdActionFilter]
         public async Task<AppResponse> AddOrder(OrderInputDto orderInputDto)
         {
             var newOrder = _mapper.Map<Order>(orderInputDto);
+            newOrder.UserId = HttpContext.Items["userId"] as string;
             await _unitOfWork.Orders.Add(newOrder);
+
+            var newOrderInDb = await _unitOfWork.Orders.GetById(newOrder.Id);
 
             return new AppResponse
             {
                 StatusCode = 201,
                 Payload = new AppResponse.ResponsePayload
                 {
-                    ResponseObject = newOrder
+                    ResponseObject = _mapper.Map<OrderOutputDto>(newOrderInDb)
                 }
             };
         }

@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DogsbarberShop.Entities.InfrastructureModels;
+using DogsBarberShop.Entities.DomainModels;
+using DogsBarberShop.Entities.Dtos.OrderDtos;
 using DogsBarberShop.Services.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,24 +13,29 @@ namespace DogsbarberShop.Controllers.Filters
     public class ProvideEntityActionFilter : Attribute, IAsyncActionFilter
     {
         private readonly IUnitOfWork _unitOfWork;
-        private string _routeValueName;
-
-        public ProvideEntityActionFilter(IUnitOfWork unitOfWork, string routeValueName)
+        private Type _entityType;
+        public ProvideEntityActionFilter(IUnitOfWork unitOfWork, Type entityType)
         {
             _unitOfWork = unitOfWork;
-            _routeValueName = routeValueName;
+            _entityType = entityType;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var controllerName = context.RouteData.Values["controller"].ToString().ToLower();
-            var targetId = new Guid(context.RouteData.Values[_routeValueName].ToString());
             var userId = context.HttpContext.User.Claims.First(c => c.Type == "id").Value.ToString();
 
-            if (controllerName == "pets")
+            if (_entityType == typeof(Pet))
             {
-                var petsList = await _unitOfWork.Pets.Get(p => p.Id == targetId && p.UserId == userId);
-                if (petsList.Count == 0)
+                Guid petId;
+                if (controllerName == "pets")
+                    petId = new Guid(context.RouteData.Values["petId"] as string);
+                else
+                    petId = (context.ActionArguments["orderInputDto"] as OrderInputDto).PetId.Value;
+
+                var petsList = await _unitOfWork.Pets.Get(p => p.Id == petId && p.UserId == userId);
+
+                if (!petsList.Any())
                 {
                     context.Result = new ObjectResult(new AppResponse
                     {
@@ -42,11 +49,6 @@ namespace DogsbarberShop.Controllers.Filters
                 }
 
                 context.HttpContext.Items["pet"] = petsList[0];
-            }
-
-            if (controllerName == "orders")
-            {
-
             }
 
             await next();

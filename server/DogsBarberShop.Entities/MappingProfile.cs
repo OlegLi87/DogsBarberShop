@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Linq;
 using AutoMapper;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
@@ -20,7 +19,11 @@ namespace DogsBarberShop.Entities
             CreateMap<Pet, PetOutputDto>();
 
             CreateMap<OrderInputDto, Order>();
-            CreateMap<Order, OrderOutputDto>();
+            CreateMap<Order, OrderOutputDto>()
+                     .ForMember(dest => dest.PetNickname,
+                                opts => opts.MapFrom(src => src.Pet.NickName))
+                     .ForMember(dest => dest.UserName,
+                                opt => opt.MapFrom(src => src.User.UserName));
 
             CreateMap<IdentityResult, AuthenticationException>()
                      .ForMember(dest => dest.ExceptionMessages,

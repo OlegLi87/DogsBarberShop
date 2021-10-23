@@ -77,7 +77,7 @@ namespace DogsbarberShop.Controllers.Controllers
         [HttpDelete]
         [Route("{petId}")]
         [ProvideUserIdActionFilter]
-        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId" })]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { typeof(Pet) })]
         public async Task<AppResponse> DeletePet()
         {
             var petToDelete = HttpContext.Items["pet"] as Pet;
@@ -92,7 +92,7 @@ namespace DogsbarberShop.Controllers.Controllers
 
         [HttpPatch]
         [Route("{petId}")]
-        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId" })]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { typeof(Pet) })]
         public async Task<AppResponse> UpdatePet(PetUpdateDto petUpdateDto)
         {
             var petToUpdate = HttpContext.Items["pet"] as Pet;
