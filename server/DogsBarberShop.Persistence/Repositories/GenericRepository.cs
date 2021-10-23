@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DogsBarberShop.Persistence.Repositories
 {

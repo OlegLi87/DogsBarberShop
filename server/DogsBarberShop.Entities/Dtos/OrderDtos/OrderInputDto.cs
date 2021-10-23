@@ -1,12 +1,11 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using DogsBarberShop.Entities.ModelValidators;
 
 namespace DogsBarberShop.Entities.Dtos.OrderDtos
 {
     public class OrderInputDto
     {
-        [Required(ErrorMessage = "Pet id is missing.")]
+        [OrderInputPetIdValidator]
         public Guid? PetId { get; set; }
 
         [DateInTheFutureValidator]

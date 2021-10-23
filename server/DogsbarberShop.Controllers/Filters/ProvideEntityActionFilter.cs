@@ -39,7 +39,7 @@ namespace DogsbarberShop.Controllers.Filters
                 {
                     context.Result = new ObjectResult(new AppResponse
                     {
-                        StatusCode = 400,
+                        StatusCode = 404,
                         Payload = new AppResponse.ResponsePayload
                         {
                             Errors = new[] { "User doesn't have a pet with provided id." }
@@ -47,8 +47,26 @@ namespace DogsbarberShop.Controllers.Filters
                     });
                     return;
                 }
-
                 context.HttpContext.Items["pet"] = petsList[0];
+            }
+            else if (_entityType == typeof(Order))
+            {
+                var orderId = new Guid(context.RouteData.Values["orderId"] as string);
+
+                var ordersList = await _unitOfWork.Orders.Get(o => o.Id == orderId && o.UserId == userId);
+                if (!ordersList.Any())
+                {
+                    context.Result = new ObjectResult(new AppResponse
+                    {
+                        StatusCode = 404,
+                        Payload = new AppResponse.ResponsePayload
+                        {
+                            Errors = new[] { "User doesn't have an order with provided id." }
+                        }
+                    });
+                    return;
+                }
+                context.HttpContext.Items["order"] = ordersList[0];
             }
 
             await next();

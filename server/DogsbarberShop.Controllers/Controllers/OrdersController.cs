@@ -8,6 +8,7 @@ using DogsbarberShop.Entities.InfrastructureModels;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Dtos.OrderDtos;
 using DogsBarberShop.Services.UnitOfWork;
+using DogsBarberShop.Services.UtilsService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -20,11 +21,13 @@ namespace DogsbarberShop.Controllers.Controllers
     public sealed class OrdersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUtilsService _utilsService;
         private readonly IMapper _mapper;
 
-        public OrdersController(IUnitOfWork unitOfWork, IMapper mapper)
+        public OrdersController(IUnitOfWork unitOfWork, IUtilsService utilsService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _utilsService = utilsService;
             _mapper = mapper;
         }
 
@@ -70,6 +73,44 @@ namespace DogsbarberShop.Controllers.Controllers
                 Payload = new AppResponse.ResponsePayload
                 {
                     ResponseObject = _mapper.Map<OrderOutputDto>(newOrderInDb)
+                }
+            };
+        }
+
+        [HttpDelete]
+        [Route("{orderId}")]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { typeof(Order) })]
+        public async Task<AppResponse> DeleteOrder()
+        {
+            var orderToDelete = HttpContext.Items["order"] as Order;
+
+            await _unitOfWork.Orders.Delete(orderToDelete);
+
+            return new AppResponse
+            {
+                StatusCode = 204
+            };
+        }
+
+        [HttpPatch]
+        [Route("{orderId}")]
+        [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { typeof(Order) })]
+        [ServiceFilter(typeof(ArrivalDateTimeOnWorkingTimeActionFilter))]
+        [ServiceFilter(typeof(RoundArrivalTimeActionFilter))]
+        [ServiceFilter(typeof(NoRegisteredOrderOnArrivalDateTime))]
+        public async Task<AppResponse> UpdateOrder(OrderInputDto orderInputDto)
+        {
+            var order = HttpContext.Items["order"] as Order;
+            await _unitOfWork.Orders.PatchUpdate(order, _utilsService.MapPropertiesToDictionary(orderInputDto));
+
+            order.ArrivalDate = orderInputDto.ArrivalDate;
+
+            return new AppResponse
+            {
+                StatusCode = 200,
+                Payload = new AppResponse.ResponsePayload
+                {
+                    ResponseObject = _mapper.Map<OrderOutputDto>(order)
                 }
             };
         }
