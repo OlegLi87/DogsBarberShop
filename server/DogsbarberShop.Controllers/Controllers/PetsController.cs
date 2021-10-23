@@ -76,6 +76,7 @@ namespace DogsbarberShop.Controllers.Controllers
 
         [HttpDelete]
         [Route("{petId}")]
+        [ProvideUserIdActionFilter]
         [TypeFilter(typeof(ProvideEntityActionFilter), Arguments = new[] { "petId" })]
         public async Task<AppResponse> DeletePet()
         {

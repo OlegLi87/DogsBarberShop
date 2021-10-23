@@ -31,13 +31,13 @@ namespace DogsbarberShop.Controllers.Filters
             if (actionName == "signup")
                 statusCode = 201;
 
-            var response = string.Empty;
+            object response;
 
             switch (actionName)
             {
                 case "signup":
                     {
-                        response = "User successfully created.Email confimration link was sent to email address.";
+                        response = new { Message = "User successfully created.Email confimration link was sent to email address." };
                         break;
                     }
                 case "signin":
@@ -47,17 +47,22 @@ namespace DogsbarberShop.Controllers.Filters
                     }
                 case "confirmemail":
                     {
-                        response = "Email successfully confirmed.";
+                        response = new { Message = "Email successfully confirmed." };
                         break;
                     }
                 case "forgotpassword":
                     {
-                        response = "Password reset link was sent to email address.";
+                        response = new { Message = "Password reset link was sent to email address." };
                         break;
                     }
                 case "resetpassword":
                     {
-                        response = "Password successfully reset.";
+                        response = new { Message = "Password successfully reset." };
+                        break;
+                    }
+                default:
+                    {
+                        response = new { Message = "Auth operation completed successfully." };
                         break;
                     }
             }

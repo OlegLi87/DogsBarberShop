@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DogsBarberShop.Entities.DomainModels;
 using DogsBarberShop.Entities.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DogsBarberShop.Persistence.Repositories
 {
@@ -47,6 +48,10 @@ namespace DogsBarberShop.Persistence.Repositories
 
         public virtual async Task PatchUpdate(T entity, Dictionary<string, dynamic> newValues)
         {
+            var entry = Context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+                TargetData.Attach(entity);
+
             var entityType = entity.GetType();
             var props = entityType.GetProperties();
 

@@ -26,6 +26,10 @@ namespace DogsBarberShop.Persistence
                    .HasKey(p => new { p.Id, p.UserId });
 
             builder.Entity<Pet>()
+                   .Property(p => p.Id)
+                   .ValueGeneratedOnAdd(); // since guids are not generated for composite keys.
+
+            builder.Entity<Pet>()
                    .HasOne(p => p.User)
                    .WithMany(u => u.Pets)
                    .HasForeignKey(p => p.UserId)
@@ -33,11 +37,14 @@ namespace DogsBarberShop.Persistence
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Order>()
+                   .Property(o => o.PetId)
+                   .IsRequired(false);
+
+            builder.Entity<Order>()
                    .HasOne(o => o.Pet)
                    .WithOne(p => p.Order)
                    .HasPrincipalKey<Pet>(p => new { p.Id, p.UserId })
                    .HasForeignKey<Order>(o => new { o.PetId, o.UserId })
-                   .IsRequired()
                    .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Order>()

@@ -14,7 +14,7 @@ namespace DogsBarberShop.Entities.DomainModels
         [Required]
         [Column(TypeName = "datetimeoffset")]
         public DateTimeOffset? ArrivalDate { get; set; }
-        public Guid PetId { get; set; }
+        public Guid? PetId { get; set; }
         public string UserId { get; set; }
         public Pet Pet { get; set; }
         public User User { get; set; }
