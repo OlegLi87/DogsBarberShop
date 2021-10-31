@@ -1,0 +1,15 @@
+$primaryWhite: rgb(250, 250, 250);
+$primaryBlack: rgba(0, 0, 0, 0.9);
+$primaryRed: #ff5454;
+$primaryGreen: #27cf54;
+
+$backgroundImage: url("../assets/loginPageBackground.jpeg");
+
+@mixin background($blur: 1px, $saturate: 150%) {
+  background-image: $backgroundImage;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  backdrop-filter: blur($blur) saturate($saturate);
+}

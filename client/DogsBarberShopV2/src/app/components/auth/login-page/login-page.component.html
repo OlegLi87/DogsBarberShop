@@ -1,0 +1,38 @@
+<div class="container" [class.right-panel-active]="loginMode === 1">
+  <div class="container-form container-signup">
+    <login-form
+      [loginMode]="1"
+      [loginModeToggledStream$]="loginModeToggledStream$"
+    ></login-form>
+  </div>
+  <div class="container-form container-signin">
+    <login-form
+      [loginMode]="0"
+      [loginModeToggledStream$]="loginModeToggledStream$"
+    ></login-form>
+  </div>
+  <div class="container-overlay">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <button
+          id="btnSignIn"
+          tuiButton
+          [size]="tuiElementSize"
+          (click)="toggleLoginMode('signin')"
+        >
+          Sign In
+        </button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <button
+          id="btnSignUp"
+          tuiButton
+          [size]="tuiElementSize"
+          (click)="toggleLoginMode('signup')"
+        >
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

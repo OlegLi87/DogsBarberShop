@@ -1,0 +1,188 @@
+<div class="form-container">
+  <form [formGroup]="loginFg" (ngSubmit)="onSubmit()">
+    <h2>{{ loginMode.toString() | i18nSelect: formTitles }}</h2>
+
+    <div class="tui-form__row">
+      <tui-input
+        formControlName="userName"
+        [tuiTextfieldSize]="tuiElementSize"
+        tuiHintContent="At least 2 chars"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldCustomContent]="
+          getControl('userName').valid ? success : ''
+        "
+        >User name <span class="tui-required"></span
+      ></tui-input>
+      <ng-container
+        *ngIf="
+          getControl('userName').invalid &&
+          (getControl('userName').touched || wasSubmitted)
+        "
+      >
+        <span
+          *ngIf="getControl('userName').errors?.required"
+          class="validation-error"
+          >User name is required.</span
+        >
+        <span
+          *ngIf="getControl('userName').errors?.minlength"
+          class="validation-error"
+          >Must have at least 2 chars.</span
+        >
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="loginMode === 1">
+      <div class="tui-form__row">
+        <tui-input
+          formControlName="email"
+          [tuiTextfieldSize]="tuiElementSize"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldExampleText="mail@mail.com"
+          [tuiTextfieldCustomContent]="getControl('email').valid ? success : ''"
+          >Email <span class="tui-required"></span
+        ></tui-input>
+      </div>
+      <ng-container
+        *ngIf="
+          getControl('email').invalid &&
+          (getControl('email').touched || wasSubmitted)
+        "
+      >
+        <span
+          *ngIf="getControl('email').errors?.required"
+          class="validation-error"
+          >Email is required.</span
+        >
+        <span *ngIf="getControl('email').errors?.email" class="validation-error"
+          >Email format is invalid.</span
+        >
+      </ng-container>
+    </ng-container>
+
+    <div class="tui-form__row">
+      <tui-input-password
+        formControlName="password"
+        [tuiTextfieldSize]="tuiElementSize"
+        tuiHintContent="At least 5 chars"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldCustomContent]="
+          getControl('password').valid ? success : ''
+        "
+        >Password <span class="tui-required"></span
+      ></tui-input-password>
+      <ng-container
+        *ngIf="
+          getControl('password').invalid &&
+          (getControl('password').touched || wasSubmitted)
+        "
+      >
+        <span
+          class="validation-error"
+          *ngIf="getControl('password').errors?.required"
+          >Password is required.</span
+        >
+        <span
+          class="validation-error"
+          *ngIf="getControl('password').errors?.minlength"
+          >Must have at least 5 chars.</span
+        >
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="loginMode === 1">
+      <div class="tui-form__row">
+        <tui-input-password
+          formControlName="confirmPassword"
+          [tuiTextfieldSize]="tuiElementSize"
+          [tuiTextfieldCleaner]="true"
+          [tuiTextfieldCustomContent]="
+            getControl('confirmPassword').valid ? success : ''
+          "
+          >Confirm password <span class="tui-required"></span
+        ></tui-input-password>
+        <ng-container
+          *ngIf="
+            getControl('confirmPassword').invalid &&
+            (getControl('confirmPassword').touched || wasSubmitted)
+          "
+        >
+          <span
+            class="validation-error"
+            *ngIf="getControl('confirmPassword').errors?.required"
+            >Password confirmation is required.</span
+          >
+          <span
+            class="validation-error"
+            *ngIf="getControl('confirmPassword').errors?.minlength"
+          >
+            Must have at least 5 chars.
+          </span>
+          <span
+            class="validation-error"
+            *ngIf="getControl('confirmPassword').errors?.mismatch"
+          >
+            Passwords dont match.
+          </span>
+        </ng-container>
+      </div>
+
+      <div class="tui-form__row">
+        <tui-input
+          formControlName="firstName"
+          [tuiTextfieldSize]="tuiElementSize"
+          tuiHintContent="At least 2 chars"
+          [tuiTextfieldCleaner]="true"
+          [tuiTextfieldCustomContent]="
+            getControl('firstName').valid ? success : ''
+          "
+          >First name <span class="tui-required"></span
+        ></tui-input>
+        <ng-container
+          *ngIf="
+            getControl('firstName').invalid &&
+            (getControl('firstName').touched || wasSubmitted)
+          "
+        >
+          <span
+            class="validation-error"
+            *ngIf="getControl('firstName').errors?.required"
+          >
+            First name is required.
+          </span>
+          <span
+            class="validation-error"
+            *ngIf="getControl('firstName').errors?.minlength"
+          >
+            Must have at least 2 chars.
+          </span>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-template #success>
+      <tui-svg class="success tui-space_left-3" src="tuiIconCheck"></tui-svg>
+    </ng-template>
+
+    <div class="tui-form__row">
+      <button
+        tuiButton
+        shape="rounded"
+        [size]="tuiElementSize"
+        [disabled]="wasSubmitted && loginFg.invalid"
+      >
+        Submit
+      </button>
+      <button
+        tuiButton
+        shape="rounded"
+        [size]="tuiElementSize"
+        appearance="whiteblock"
+        type="button"
+        (click)="clearState()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

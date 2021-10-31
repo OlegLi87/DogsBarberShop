@@ -1,0 +1,37 @@
+@import "theme", "sharedStyle";
+
+:host {
+  @include contentCenteredContainer(flex);
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.form-container {
+  width: 80%;
+
+  form {
+    padding: 1em;
+
+    h2 {
+      text-align: start;
+      padding-left: 0.5em;
+    }
+
+    & > .tui-form__row:last-child {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .validation-error {
+      color: $primaryRed;
+      font-size: 0.85em;
+      position: relative;
+      left: 0.8em;
+    }
+
+    .success {
+      color: $primaryGreen;
+    }
+  }
+}

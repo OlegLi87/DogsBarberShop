@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+@import "theme", "sharedStyle";
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  min-height: 100vh;
+}
+
+body {
+  color: $primaryBlack;
+  @include background;
+}
+
+%headerStyle {
+  text-align: center;
+}
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    @extend %headerStyle;
+  }
+}

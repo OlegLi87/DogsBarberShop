@@ -1,0 +1,150 @@
+@import "theme", "sharedStyle";
+
+$containerMinHeight: min(80vh, 580px);
+$containerMaxWidth: 70vw;
+$overlayBackground: rgba(255, 255, 255, 0.4);
+
+:host {
+  @include fullVhCenteredContent;
+}
+
+.container {
+  position: relative;
+  height: $containerMinHeight;
+  width: 100%;
+  max-width: $containerMaxWidth;
+  overflow: hidden;
+  border-radius: map-get($border, md);
+  box-shadow: $boxShadow;
+  background-color: $primaryWhite;
+
+  @include media(sm) {
+    max-width: 98%;
+  }
+
+  @include media(md) {
+    max-width: 85%;
+  }
+
+  @include media(lg) {
+    max-width: 75%;
+  }
+
+  @include media(xlg) {
+    max-width: 55%;
+  }
+}
+
+.container-form {
+  position: absolute;
+  top: 0;
+  transform: translateX(0);
+  min-height: 100%;
+  width: 50%;
+  background-color: $primaryWhite;
+  @include transition;
+}
+
+.container-signin {
+  z-index: 2;
+}
+
+.right-panel-active .container-signin {
+  transform: translateX(100%);
+}
+
+.container-signup {
+  animation: hide 0.5s forwards;
+}
+
+.right-panel-active .container-signup {
+  animation: show 0.5s forwards;
+  transform: translateX(100%);
+}
+
+.container-overlay {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  z-index: 100;
+  overflow: hidden;
+  @include transition;
+}
+
+.right-panel-active .container-overlay {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  @include transition;
+  @include background;
+}
+
+.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background-color: $overlayBackground;
+  transform: translateX(0);
+  @include transition;
+  @include glassEffect;
+  @include contentCenteredContainer(flex);
+  flex-direction: column;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+@keyframes show {
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+@keyframes hide {
+  50%,
+  100% {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  0%,
+  49.99% {
+    opacity: 1;
+    z-index: 5;
+  }
+}

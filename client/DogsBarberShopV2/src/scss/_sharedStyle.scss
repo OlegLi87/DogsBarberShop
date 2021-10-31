@@ -1,0 +1,61 @@
+$border: (
+  sm: 10px,
+  md: 20px,
+  lg: 30px,
+);
+
+$breakPoints: (
+  sm: 0px,
+  md: 481px,
+  lg: 769px,
+  xlg: 1025px,
+  xxlg: 1201px,
+);
+
+$boxShadow: 0 13px 25px rgb(0, 0, 0, 0.8), 0 10px 10px rgba(0, 0, 0, 0.8);
+
+@mixin contentCenteredContainer($display: grid) {
+  display: $display;
+
+  @if $display == flex {
+    justify-content: center;
+    align-items: center;
+  } @else {
+    place-items: center;
+  }
+}
+
+@mixin fullVhCenteredContent($display: grid) {
+  min-height: 100vh;
+  @include contentCenteredContainer($display);
+}
+
+@mixin transition($target: all, $duration: 0.5s) {
+  transition: $target $duration ease-in-out;
+}
+
+@mixin glassEffect($blur: 1px) {
+  backdrop-filter: blur($blur);
+}
+
+@function getSize($breakPoint) {
+  $size: map-get($breakPoints, $breakPoint);
+  @if not $size {
+    @return map-get($breakPoints, md);
+  }
+  @return $size;
+}
+
+@mixin media($breakPoint, $direction: width) {
+  $size: getSize($breakPoint);
+
+  @if ($direction == width) {
+    @media screen and(min-width: $size) {
+      @content;
+    }
+  } @else {
+    @media screen and(min-height: $size) {
+      @content;
+    }
+  }
+}
