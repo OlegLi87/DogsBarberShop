@@ -1,11 +1,14 @@
 {
   "style": {
-    "breakPoints": {
+    "breakpoints": {
       "sm": 0,
       "md": 481,
       "lg": 769,
       "xlg": 1025,
       "xxlg": 1201
     }
+  },
+  "componentPaths": {
+    "login": ["/login", "/login/emailConfirmed"]
   }
 }

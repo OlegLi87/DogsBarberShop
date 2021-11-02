@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   localStorageUserTokenKey: 'user_token',
-  api_address: 'http://localhost:5000',
+  api_address: 'http://localhost:5000/api',
+  emailConfirmationUrl: 'http://localhost:4200/login/emailConfirmation',
 };
 
 /*

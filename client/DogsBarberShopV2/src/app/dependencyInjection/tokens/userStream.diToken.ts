@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import User from 'src/app/models/user';
+import { User } from 'src/app/models/user';
 
 export type UserStream = BehaviorSubject<User | null>;
 

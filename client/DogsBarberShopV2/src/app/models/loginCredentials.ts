@@ -4,4 +4,5 @@ export interface LoginCredentials {
   confirmPassword?: string;
   email?: string;
   firstName?: string;
+  emailConfirmationUrl?: string;
 }

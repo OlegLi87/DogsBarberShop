@@ -16,6 +16,7 @@ export enum LoginMode {
 export class LoginPageComponent implements OnInit {
   loginMode = LoginMode.SignUp;
   loginModeToggledStream$ = new Subject<boolean>();
+  emailConfirmationSent = true;
 
   private _currentBreakPoint!: string;
 

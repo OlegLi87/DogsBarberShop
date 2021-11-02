@@ -1,0 +1,5 @@
+<div class="wrapper" *ngIf="notificationMessage">
+  <tui-notification [status]="notificationMessage.status"
+    ><h3>{{ notificationMessage.message }}</h3>
+  </tui-notification>
+</div>

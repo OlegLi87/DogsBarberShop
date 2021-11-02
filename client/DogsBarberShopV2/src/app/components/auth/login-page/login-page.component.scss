@@ -18,6 +18,10 @@ $overlayBackground: rgba(255, 255, 255, 0.4);
   box-shadow: $boxShadow;
   background-color: $primaryWhite;
 
+  &.emailConfirm {
+    height: auto;
+  }
+
   @include media(sm) {
     max-width: 98%;
   }

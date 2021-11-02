@@ -1,3 +1,4 @@
+import { AuthService } from './../../../services/auth.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import {
   loginFormGroupFactory,
@@ -8,6 +9,11 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { LoginMode } from '../login-page/login-page.component';
 import { Observable } from 'rxjs';
 import { UtilsService } from 'src/app/services/utils.service';
+import {
+  NOTIFICATION_MESSAGE_STREAM,
+  NotificationMessageStream,
+} from 'src/app/dependencyInjection/tokens/notificationMessageStream.diToken';
+import { NotificationMessageStatus } from 'src/app/models/notificationMessage';
 
 @Component({
   selector: 'login-form',
@@ -28,8 +34,11 @@ export class LoginFormComponent implements OnInit {
   _currentBreakPoint!: string;
 
   constructor(
+    private _authService: AuthService,
     private _utils: UtilsService,
-    @Inject(LOGIN_FG_FACTORY) private _fgFactory: LoginFgFactory
+    @Inject(LOGIN_FG_FACTORY) private _fgFactory: LoginFgFactory,
+    @Inject(NOTIFICATION_MESSAGE_STREAM)
+    private _notificationMessageStream$: NotificationMessageStream
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +50,12 @@ export class LoginFormComponent implements OnInit {
   onSubmit(): void {
     this.wasSubmitted = true;
     if (this.loginFg.valid) {
-      console.log(this.loginFg.value);
+      //this._authService.login(this.loginFg.value, this.loginMode);
+      this._notificationMessageStream$.next({
+        message:
+          'To complete registration proccess,please follow a link that was sent to your email address.',
+        status: NotificationMessageStatus.Information,
+      });
     }
   }
 

@@ -1,28 +1,24 @@
+import { APP_CONFIG_STREAM } from './../tokens/appConfig.diToken';
 import { FactoryProvider, APP_INITIALIZER } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { APP_CONFIG_STREAM } from './appConfig.provider';
+import { catchError, tap } from 'rxjs/operators';
+import { AppConfigStream } from '../tokens/appConfig.diToken';
+import { AppConfig } from 'src/app/models/appConfig';
 
 function importAppConfig(
   httpClient: HttpClient,
-  appConfigStream$: BehaviorSubject<any>
+  appConfigStream$: AppConfigStream
 ) {
   return () => {
-    return new Promise<void>((res, rej) => {
-      httpClient
-        .get('./assets/appConfig.json')
-        .pipe(
-          catchError((err) => {
-            rej('Error occurred while loading config file.');
-            throw err;
-          })
-        )
-        .subscribe((config) => {
-          appConfigStream$.next(config);
-          res();
-        });
-    });
+    return httpClient.get<AppConfig>('./assets/appConfig.json').pipe(
+      tap((config) => {
+        appConfigStream$.next(config);
+      }),
+      catchError((err) => {
+        console.error('Failed to load config file.');
+        throw err;
+      })
+    );
   };
 }
 
