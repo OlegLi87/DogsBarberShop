@@ -1,0 +1,12 @@
+@import "sharedStyle";
+
+:host {
+  @include fullVhCenteredContent;
+
+  .container {
+    @include contentCenteredContainer(flex, column);
+    @include contentContainerBackdrop;
+    padding: 2em;
+    border-radius: map-get($border, md);
+  }
+}

@@ -12,12 +12,19 @@ $breakPoints: (
   xxlg: 1201px,
 );
 
+$inputSiblingsFontSize: 0.8em;
 $boxShadow: 0 13px 25px rgb(0, 0, 0, 0.8), 0 10px 10px rgba(0, 0, 0, 0.8);
 
-@mixin contentCenteredContainer($display: grid) {
+@mixin contentContainerBackdrop {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+@mixin contentCenteredContainer($display: grid, $flexDirection: row) {
   display: $display;
 
   @if $display == flex {
+    flex-direction: $flexDirection;
     justify-content: center;
     align-items: center;
   } @else {

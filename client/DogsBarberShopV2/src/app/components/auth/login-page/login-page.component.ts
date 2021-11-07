@@ -15,8 +15,8 @@ export enum LoginMode {
 })
 export class LoginPageComponent implements OnInit {
   loginMode = LoginMode.SignUp;
-  loginModeToggledStream$ = new Subject<boolean>();
-  emailConfirmationSent = true;
+  loginModeToggledStream$ = new Subject<void>();
+  isLoading = false;
 
   private _currentBreakPoint!: string;
 
@@ -30,7 +30,7 @@ export class LoginPageComponent implements OnInit {
     if (mode === 'signin') this.loginMode = LoginMode.SignIn;
     else this.loginMode = LoginMode.SignUp;
 
-    this.loginModeToggledStream$.next(true);
+    this.loginModeToggledStream$.next();
   }
 
   get tuiElementSize(): 's' | 'm' | 'l' {

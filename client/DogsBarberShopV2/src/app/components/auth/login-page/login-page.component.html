@@ -1,14 +1,20 @@
-<div class="container" [class.right-panel-active]="loginMode === 1">
+<div
+  class="container"
+  [class.right-panel-active]="loginMode === 1"
+  [class.loading]="isLoading"
+>
   <div class="container-form container-signup">
     <login-form
       [loginMode]="1"
       [loginModeToggledStream$]="loginModeToggledStream$"
+      (isOnLoading)="isLoading = $event"
     ></login-form>
   </div>
   <div class="container-form container-signin">
     <login-form
       [loginMode]="0"
       [loginModeToggledStream$]="loginModeToggledStream$"
+      (isOnLoading)="isLoading = $event"
     ></login-form>
   </div>
   <div class="container-overlay">
@@ -36,3 +42,5 @@
     </div>
   </div>
 </div>
+
+<load-spinner *ngIf="isLoading"></load-spinner>

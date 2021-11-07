@@ -10,7 +10,9 @@ import { LoginMode } from 'src/app/components/auth/login-page/login-page.compone
 
 type Controls = { [key: string]: AbstractControl };
 
-const confirmPasswordValidator: ValidatorFn = (control: AbstractControl) => {
+export const confirmPasswordValidator: ValidatorFn = (
+  control: AbstractControl
+) => {
   const password = control.parent?.get('password')?.value;
   const confirmPassword = control.value as string;
 

@@ -23,15 +23,14 @@
       justify-content: space-around;
     }
 
-    .validation-error {
-      color: $primaryRed;
-      font-size: 0.85em;
-      position: relative;
-      left: 0.8em;
-    }
-
     .success {
       color: $primaryGreen;
+    }
+
+    a[tuiLink] {
+      font-size: $inputSiblingsFontSize + 0.1em;
+      display: block;
+      text-align: right;
     }
   }
 }

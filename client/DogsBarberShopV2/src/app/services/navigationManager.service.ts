@@ -3,7 +3,7 @@ import {
   AppConfigStream,
 } from './../dependencyInjection/tokens/appConfig.diToken';
 import { Inject, Injectable } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import {
   UserStream,
@@ -20,6 +20,16 @@ export class NavigationManagerService {
     @Inject(APP_CONFIG_STREAM) private _appConfigStream$: AppConfigStream
   ) {
     this.configureNavigation();
+  }
+
+  navigate(path: string, callback?: () => void) {
+    const subs = this._router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        subs.unsubscribe();
+        if (callback) callback();
+      });
+    this._router.navigateByUrl(path);
   }
 
   // in case user stream emitted value on first navigaion (at app init),
@@ -40,9 +50,9 @@ export class NavigationManagerService {
             const loginComponentsPaths =
               this._appConfigStream$.value?.componentPaths.login;
 
-            if (!user && !loginComponentsPaths?.find((u) => u === url))
+            if (!user && !loginComponentsPaths?.find((u) => url.includes(u)))
               this._router.navigateByUrl('login');
-            else if (user && loginComponentsPaths?.find((u) => u === url))
+            else if (user && loginComponentsPaths?.find((u) => url.includes(u)))
               this._router.navigateByUrl('');
           });
       } else {

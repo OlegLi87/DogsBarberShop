@@ -61,6 +61,9 @@
     </ng-container>
 
     <div class="tui-form__row">
+      <ng-container *ngIf="loginMode !== 1">
+        <a tuiLink routerLink="resetPassword">Forgot your password?</a>
+      </ng-container>
       <tui-input-password
         formControlName="password"
         [tuiTextfieldSize]="tuiElementSize"

@@ -1,12 +1,13 @@
 @import "sharedStyle";
 
 .wrapper {
+  display: grid;
+  grid-gap: 1em;
   position: fixed;
   left: 50%;
-  top: 10px;
+  top: 1em;
   transform: translateX(-50%);
   z-index: 100;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
   h3 {
     margin: 0;

@@ -36,7 +36,7 @@ namespace DogsbarberShop.Controllers.Controllers
             return await _authService.SignIn(credentials);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("confirmEmail")]
         public async Task ConfirmEmail([FromQuery] string token, [FromQuery] string email)
         {

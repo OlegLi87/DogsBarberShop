@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using AutoMapper;
 using DogsbarberShop.Entities.Dtos.UserCredentials;
 using DogsbarberShop.Entities.InfrastructureModels;
@@ -12,6 +13,7 @@ using DogsBarberShop.Entities.InfastructureModels;
 using DogsBarberShop.Services.EmailService;
 using DogsBarberShop.Services.JwtService;
 using DogsBarberShop.Services.UtilsService;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.WebUtilities;
@@ -136,7 +138,8 @@ namespace DogsBarberShop.Services.AuthService
             if (string.IsNullOrEmpty(emailConfirmationUrl))
                 emailConfirmationUrl = $"{_utilsService.GetHostUrl()}/{_appSettings.ConfirmEmailPath}";
 
-            return QueryHelpers.AddQueryString(emailConfirmationUrl, queryParams);
+            var url = QueryHelpers.AddQueryString(emailConfirmationUrl, queryParams);
+            return url;
         }
 
         private async Task<string> generateResetPasswordLink(User user, string resetPasswordUrl)

@@ -23,3 +23,23 @@ body {
     @extend %headerStyle;
   }
 }
+
+.loading {
+  filter: blur(5px);
+
+  &::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 110;
+  }
+}
+
+.validation-error {
+  color: $primaryRed;
+  font-size: 0.85em;
+  position: relative;
+  left: $inputSiblingsFontSize;
+}

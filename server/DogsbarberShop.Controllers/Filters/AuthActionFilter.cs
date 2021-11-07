@@ -42,7 +42,7 @@ namespace DogsbarberShop.Controllers.Filters
                     }
                 case "signin":
                     {
-                        response = (context.Result as ObjectResult).Value as string;
+                        response = new { Token = (context.Result as ObjectResult).Value };
                         break;
                     }
                 case "confirmemail":

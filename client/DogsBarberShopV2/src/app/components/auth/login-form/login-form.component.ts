@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './../../../services/auth.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import {
@@ -5,15 +6,17 @@ import {
   LoginFgFactory,
   LOGIN_FG_FACTORY,
 } from './../../../dependencyInjection/providers/loginFormGroupFactory.provider';
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { LoginMode } from '../login-page/login-page.component';
-import { Observable } from 'rxjs';
-import { UtilsService } from 'src/app/services/utils.service';
 import {
-  NOTIFICATION_MESSAGE_STREAM,
-  NotificationMessageStream,
-} from 'src/app/dependencyInjection/tokens/notificationMessageStream.diToken';
-import { NotificationMessageStatus } from 'src/app/models/notificationMessage';
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { LoginMode } from '../login-page/login-page.component';
+import { Observable, throwError } from 'rxjs';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'login-form',
@@ -23,22 +26,21 @@ import { NotificationMessageStatus } from 'src/app/models/notificationMessage';
 })
 export class LoginFormComponent implements OnInit {
   @Input() loginMode!: LoginMode;
-  @Input() loginModeToggledStream$!: Observable<boolean>;
+  @Input() loginModeToggledStream$!: Observable<void>;
+  @Output() isOnLoading = new EventEmitter<boolean>();
 
   loginFg!: FormGroup;
   wasSubmitted = false;
   formTitles = {
-    [LoginMode.SignIn]: 'Sign In',
-    [LoginMode.SignUp]: 'Sign Up',
+    [LoginMode.SignIn]: 'Sign-In',
+    [LoginMode.SignUp]: 'Sign-Up',
   };
   _currentBreakPoint!: string;
 
   constructor(
     private _authService: AuthService,
     private _utils: UtilsService,
-    @Inject(LOGIN_FG_FACTORY) private _fgFactory: LoginFgFactory,
-    @Inject(NOTIFICATION_MESSAGE_STREAM)
-    private _notificationMessageStream$: NotificationMessageStream
+    @Inject(LOGIN_FG_FACTORY) private _fgFactory: LoginFgFactory
   ) {}
 
   ngOnInit(): void {
@@ -50,12 +52,19 @@ export class LoginFormComponent implements OnInit {
   onSubmit(): void {
     this.wasSubmitted = true;
     if (this.loginFg.valid) {
-      //this._authService.login(this.loginFg.value, this.loginMode);
-      this._notificationMessageStream$.next({
-        message:
-          'To complete registration proccess,please follow a link that was sent to your email address.',
-        status: NotificationMessageStatus.Information,
-      });
+      this.isOnLoading.emit(true);
+      this._authService
+        .login(this.loginFg.value, this.loginMode)
+        .pipe(
+          catchError((err) => {
+            this.isOnLoading.emit(false);
+            return throwError(err);
+          })
+        )
+        .subscribe(() => {
+          this.isOnLoading.emit(false);
+          this.clearState();
+        });
     }
   }
 
